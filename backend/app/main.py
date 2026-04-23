@@ -29,8 +29,6 @@ if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# --- 3. ЕНДПОІНТИ АВТОРИЗАЦІЇ ---
-
 @app.post("/login", response_model=schemas.Token)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
     user = crud.get_user_by_username(db, username=form_data.username)
@@ -127,7 +125,7 @@ async def upload_multiple_files(files: list[UploadFile] = File(...)):
 
 @app.post("/applications", response_model=schemas.ApplicationOut)
 def send_application(app_data: schemas.ApplicationCreate, db: Session = Depends(database.get_db)):
-    # Публічний ендпоінт для клієнтів
+
     return crud.create_application(db=db, app_data=app_data)
 
 @app.get("/applications", response_model=list[schemas.ApplicationOut])
