@@ -1,4 +1,4 @@
-const API_URL = "https://teks_energy.onrender.com";
+const API_URL = "https://teks-energy-api.onrender.com";
 
 function showNotification(message, type = 'success') {
     const container = document.getElementById('toast-container');
