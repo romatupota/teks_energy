@@ -1,7 +1,7 @@
-fastapi[all]
-uvicorn
+fastapi
+uvicorn[standard]
 sqlalchemy
-passlib[bcrypt]
-python-jose[cryptography]
 python-multipart
-python -m uvicorn app.main:app --reload
+python-jose[cryptography]
+passlib[bcrypt]
+requests
