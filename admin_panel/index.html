@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeksEnergy Admin Panel</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="toast-container"></div>
+
+    <div class="container">
+        <div id="login-section">
+            <h1>Вхід</h1>
+            <input type="text" id="username" placeholder="Логін">
+            <input type="password" id="password" placeholder="Пароль">
+            <button onclick="login()">Увійти</button>
+            <p id="login-error" style="color:red"></p>
+        </div>
+
+        <div id="admin-section" style="display:none">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>Панель керування</h1>
+                <button onclick="logout()" style="background:#666">Вийти</button>
+            </div>
+            
+            <hr>
+
+            <div class="admin-grid">
+                <div>
+                    <h3>Створити нового адміна</h3>
+                    <input type="text" id="new-admin-user" placeholder="Логін">
+                    <input type="password" id="new-admin-pass" placeholder="Пароль">
+                    <button onclick="createNewAdmin()">Створити</button>
+                </div>
+
+                <div>
+                    <h3>Видалити адміна</h3>
+                    <input type="text" id="delete-username" placeholder="Логін для видалення">
+                    <button class="btn-delete" onclick="deleteAdmin()">Видалити</button>
+                </div>
+            </div>
+
+            <hr>
+            
+            <button id="toggle-admins-btn" onclick="toggleAdminsList()">Показати список адмінів</button>
+            <div id="admins-list-container" style="display:none; margin-top:10px">
+                <ul id="admins-list"></ul>
+            </div>
+
+            <hr>
+
+            <h3>Додати новий контент</h3>
+            <div class="content-form">
+                <div class="form-group">
+                    <label>Назва проєкту:</label>
+                    <input type="text" id="content-title" placeholder="Введіть назву">
+                </div>
+
+                <div class="form-group">
+                    <label>Опис проєкту:</label>
+                    <textarea id="content-body" placeholder="Введіть повний опис"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Виберіть фото (можна декілька):</label>
+                    <input type="file" id="content-file" accept="image/*" multiple>
+                </div>
+
+                <button onclick="saveProjectWithFile()">Опублікувати проєкт</button>
+
+                <div class="search-box" style="margin-bottom: 20px; margin-top: 20px;">
+                    <input type="text" 
+                        id="admin-search" 
+                        oninput="filterProjects()" 
+                        placeholder="Пошук проекту за назвою..." 
+                        style="width: 100%; padding: 12px; border: 1px solid #444; background: #222; color: white; border-radius: 8px;">
+                </div>
+
+                <div id="edit-content-list">
+                    </div>
+
+                <div id="edit-content-list">
+                </div>
+
+                <div id="edit-content-list">
+                    <h3>Редагування існуючого контенту</h3>
+                    <p style="font-size: 0.9em; color: #666;">Тут ви можете змінити дані, які вже відображаються на сайті.</p>
+                    <div id="edit-content-list">
+                        <p>Завантаження контенту...</p>
+                    </div>
+                </div>
+
+            <section id="applications-section">
+                <h2>📋 Заявки від клієнтів</h2>
+                <div class="table-container">
+                    <table id="apps-table">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Клієнт</th>
+                                <th>Телефон</th>
+                                <th>Послуга</th>
+                            </tr>
+                        </thead>
+                        <tbody id="apps-tbody">
+                            </tbody>
+                    </table>
+                </div>
+            </section>            
+        </div>
+    </div>
+
+    <script src="./js/api.js"></script>
+</body>
+</html>
