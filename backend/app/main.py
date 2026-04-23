@@ -14,7 +14,11 @@ app = FastAPI(title="TeksEnergy API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://teks-energy-admin-panel.onrender.com/",
+        "https://teks-energy-content-site.onrender.com",
+        "http://localhost:5500",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -109,7 +113,6 @@ async def upload_file(
 @app.post("/upload-multiple")
 async def upload_multiple_files(files: list[UploadFile] = File(...)):
     urls = []
-    # Створюємо папку, якщо її немає
     upload_dir = "static/uploads"
     if not os.path.exists(upload_dir):
         os.makedirs(upload_dir)
@@ -118,7 +121,6 @@ async def upload_multiple_files(files: list[UploadFile] = File(...)):
         file_path = os.path.join(upload_dir, file.filename)
         with open(file_path, "wb") as buffer:
             buffer.write(await file.read())
-        # ВАЖЛИВО: URL має збігатися з адресою сервера
         urls.append(f"http://127.0.0.1:8000/static/uploads/{file.filename}")
     
     return urls
