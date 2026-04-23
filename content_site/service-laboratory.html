@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TEKS ENERGY — Електротехнічна лабораторія</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styil.css" />
+  <script src="from.js" defer></script>
+</head>
+<body class="project-detail-page">
+  <div class="page-glow"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-shell">
+        <div class="header-inner">
+          <div class="logo">
+            <div class="logo-badge">
+              <img src="img/logo-clean.png" alt="TEKS ENERGY" />
+            </div>
+            <div class="logo-text">
+              <span class="logo-main">TEKS</span>
+              <span class="logo-accent">ENERGY</span>
+            </div>
+          </div>
+
+          <nav class="nav">
+            <a class="nav-pill" href="index.html" data-i18n="nav_home">Головна</a>
+            <a class="nav-pill" href="index.html#services" data-i18n="nav_services">Послуги</a>
+            <a class="nav-pill" href="projects.html" data-i18n="nav_projects">Проекти</a>
+            <a class="nav-pill" href="about.html" data-i18n="nav_about">Про нас</a>
+            <a class="nav-pill nav-accent" href="#cta" data-i18n="nav_consult">Замовити консультацію</a>
+            <a class="nav-pill" href="contacts.html" data-i18n="nav_contacts">Контакти</a>
+          </nav>
+
+          <div class="lang">
+            <button class="lang-pill is-active" type="button" data-lang="ua" aria-label="Українська">
+              <img src="img/flag-ua.png" alt="Українська" />
+            </button>
+            <button class="lang-pill" type="button" data-lang="en" aria-label="English">
+              <img src="img/flag-us.png" alt="English" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="project-detail project-detail--compact project-detail--generators project-detail--laboratory">
+      <div class="container project-detail__container">
+        <div class="project-detail__hero">
+          <div class="project-detail__visual">
+            <div class="project-detail__image-frame">
+              <img src="img/service-6.png" alt="Електротехнічна лабораторія" />
+            </div>
+          </div>
+
+          <div class="project-detail__content">
+            <div class="project-detail__badges">
+              <span class="project-detail__badge project-detail__badge--accent" data-i18n="laboratory_direction_label">Напрямок 06:</span>
+              <span class="project-detail__badge project-detail__badge--soft" data-i18n="laboratory_direction_value">Електротехнічна лабораторія</span>
+            </div>
+
+            <div class="project-detail__description" data-i18n="laboratory_description">
+              Гарантія безпеки та надійності.<br /><br />Власна лабораторія для проведення випробувань та контролю якості.
+            </div>
+          </div>
+        </div>
+
+        <div class="project-detail__features">
+          <article class="detail-feature detail-feature--light">
+            <span class="detail-feature__num">01</span>
+            <p data-i18n="laboratory_feature_1">Тестування та перевірка електричних мереж.</p>
+          </article>
+          <article class="detail-feature detail-feature--dark">
+            <span class="detail-feature__num">02</span>
+            <p data-i18n="laboratory_feature_2">Випробування встановленого обладнання та систем релейного захисту.</p>
+          </article>
+          <article class="detail-feature detail-feature--dark-blue">
+            <span class="detail-feature__num">03</span>
+            <p data-i18n="laboratory_feature_3">Оформлення технічних звітів перед здачею об'єкта в експлуатацію.</p>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="cta" class="section cta">
+      <div class="container">
+        <div class="section-label" data-i18n="section_cta">Замовити послугу</div>
+        <div class="cta-grid">
+          <div class="cta-visual">
+            <div class="cta-image"></div>
+            <div class="cta-orb"></div>
+          </div>
+            <form class="cta-form" id="main-application-form">
+              <label>
+                <input type="text" id="app-name" placeholder="Ваше імʼя" required />
+              </label>
+              <label>
+                <input type="tel" id="app-phone" placeholder="+380 00 000 00 00" required />
+              </label>
+              <label>
+                <select id="app-service" required>
+                  <option value="" selected disabled>Оберіть послугу</option>
+                  <option value="Інженерні мережі">Інженерні мережі та захист</option>
+                  <option value="Підключення">Підключення до електричних мереж</option>
+                  <option value="Будівництво ПС">Будівництво та реконструкція підстанцій</option>
+                  <option value="Генератори">Встановлення та підключення генераторів</option>
+                  <option value="Енергетика">Відновлювана енергетика</option>
+                  <option value="Лабораторія">Електротехнічна лабораторія</option>
+                </select>
+              </label>
+              <button class="btn btn-primary" type="submit">Залишити заявку</button>
+            </form>
+        </div>
+        <div class="cta-hands">
+          <img src="img/hands.png" alt="Рукостискання" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contacts" class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-col footer-brand">
+        <div class="logo">
+          <div class="logo-badge">
+            <img src="img/logo-clean.png" alt="TEKS ENERGY" />
+          </div>
+          <div class="logo-text">
+            <span class="logo-main">TEKS</span>
+            <span class="logo-accent">ENERGY</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-columns">
+        <div class="footer-col">
+          <h4 data-i18n="footer_company">Компанія</h4>
+          <a href="about.html" data-i18n="nav_about">Про нас</a>
+          <a href="projects.html" data-i18n="nav_projects">Проєкти</a>
+          <a href="index.html#services" data-i18n="nav_services">Послуги</a>
+          <a href="#cta" data-i18n="footer_order">Замовити</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_services">Наші послуги</h4>
+          <a href="#" data-i18n="footer_service_1">Інженерні Мережі та Захист</a>
+          <a href="#" data-i18n="footer_service_2">Підключ. до електр. мереж</a>
+          <a href="#" data-i18n="footer_service_3">Будівництво і рек. підстанцій</a>
+          <a href="#" data-i18n="footer_service_4">Водопостач., водовідвед. та меліор.</a>
+          <a href="#" data-i18n="footer_service_5">Відновлювана Енергетика</a>
+          <a href="#" data-i18n="footer_service_6">Електротехнічна Лабораторія</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_links">Інші посилання</h4>
+          <a href="#" data-i18n="footer_link_1">Політика конфіденційності</a>
+          <a href="#" data-i18n="footer_link_2">Умови та положення</a>
+          <a href="#" data-i18n="footer_link_3">Послуги</a>
+          <a href="#" data-i18n="footer_link_4">Публікації</a>
+          <a href="#" data-i18n="footer_link_5">Центр обробки даних</a>
+          <a href="#" data-i18n="footer_link_6">Страхування</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="nav_contacts">Контакти</h4>
+          <span data-i18n="footer_address">18000, Україна, м. Черкаси,<br />вул. Енергетиків, 10</span>
+          <a href="mailto:info@teks-energy.com.ua">info@teks-energy.com.ua</a>
+          <a href="tel:+38047275XXXX">+38 (0472) 75-XX-XX</a>
+        </div>
+      </div>
+    </div>
+    <img class="footer-dots" src="img/footer-dots.png" alt="" />
+    <div class="footer-copy" data-i18n="footer_copy">©2026 TEKS ENERGY.</div>
+  </footer>
+</body>
+</html>

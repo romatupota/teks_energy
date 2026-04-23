@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TEKS ENERGY — Контакти</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styil.css" />
+  <script src="from.js" defer></script>
+</head>
+<body class="contacts-page">
+  <div class="page-glow"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-shell">
+        <div class="header-inner">
+          <div class="logo">
+            <div class="logo-badge">
+              <img src="img/logo-clean.png" alt="TEKS ENERGY" />
+            </div>
+            <div class="logo-text">
+              <span class="logo-main">TEKS</span>
+              <span class="logo-accent">ENERGY</span>
+            </div>
+          </div>
+
+          <nav class="nav">
+            <a class="nav-pill" href="index.html" data-i18n="nav_home">Головна</a>
+            <a class="nav-pill" href="index.html#services" data-i18n="nav_services">Послуги</a>
+            <a class="nav-pill" href="projects.html" data-i18n="nav_projects">Проекти</a>
+            <a class="nav-pill" href="about.html" data-i18n="nav_about">Про нас</a>
+            <a class="nav-pill nav-accent" href="#cta" data-i18n="nav_consult">Замовити консультацію</a>
+            <a class="nav-pill" href="contacts.html" data-i18n="nav_contacts">Контакти</a>
+          </nav>
+
+          <div class="lang">
+            <button class="lang-pill is-active" type="button" data-lang="ua" aria-label="Українська">
+              <img src="img/flag-ua.png" alt="Українська" />
+            </button>
+            <button class="lang-pill" type="button" data-lang="en" aria-label="English">
+              <img src="img/flag-us.png" alt="English" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="contacts-section">
+      <div class="container">
+        <div class="contacts-heading">
+          <h1 data-i18n="contacts_page_title">Наші контакти</h1>
+          <span class="contacts-heading__line" aria-hidden="true"></span>
+        </div>
+
+        <div class="contacts-grid">
+          <div class="contacts-card contacts-card--store">
+            <img src="img/contacts-store.png" alt="Офіс TEKS ENERGY" />
+          </div>
+          <div class="contacts-card contacts-card--map">
+            <img src="img/contacts-map.png" alt="Карта розташування TEKS ENERGY" />
+          </div>
+        </div>
+
+        <div class="contacts-meta">
+          <div class="contacts-item">
+            <span class="contacts-icon" aria-hidden="true">⌖</span>
+            <span data-i18n="contacts_address">м. Черкаси, вул. Хрещатик, 219</span>
+          </div>
+          <a class="contacts-item contacts-item--phone" href="tel:+380982757054">
+            <span class="contacts-icon" aria-hidden="true">✆</span>
+            <span data-i18n="contacts_phone">+380 98 275 70 54</span>
+          </a>
+          <a class="contacts-item" href="mailto:teksenergy.company@gmail.com">
+            <span class="contacts-icon" aria-hidden="true">✉</span>
+            <span data-i18n="contacts_email">teksenergy.company@gmail.com</span>
+          </a>
+          <div class="contacts-socials" aria-label="Social links">
+            <span class="contacts-social">
+              <span class="contacts-icon contacts-icon--social" aria-hidden="true">Tg</span>
+              <span data-i18n="contacts_telegram">telegram</span>
+            </span>
+            <span class="contacts-social">
+              <span class="contacts-icon contacts-icon--social" aria-hidden="true">WA</span>
+              <span data-i18n="contacts_whatsapp">WhatsApp</span>
+            </span>
+            <span class="contacts-social">
+              <span class="contacts-icon contacts-icon--social" aria-hidden="true">Vb</span>
+              <span data-i18n="contacts_viber">Viber</span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="cta" class="section cta">
+      <div class="container">
+        <div class="section-label" data-i18n="section_cta">Замовити послугу</div>
+        <div class="cta-grid">
+          <div class="cta-visual">
+            <div class="cta-image"></div>
+            <div class="cta-orb"></div>
+          </div>
+            <form class="cta-form" id="main-application-form">
+            <label>
+              <input type="text" id="app-name" placeholder="Ваше імʼя" required />
+            </label>
+            <label>
+              <input type="tel" id="app-phone" placeholder="+380 00 000 00 00" required />
+            </label>
+            <label>
+              <select id="app-service" required>
+                <option value="" selected disabled>Оберіть послугу</option>
+                <option value="Інженерні мережі">Інженерні мережі та захист</option>
+                <option value="Підключення">Підключення до електричних мереж</option>
+                <option value="Будівництво ПС">Будівництво та реконструкція підстанцій</option>
+                <option value="Генератори">Встановлення та підключення генераторів</option>
+                <option value="Енергетика">Відновлювана енергетика</option>
+                <option value="Лабораторія">Електротехнічна лабораторія</option>
+              </select>
+            </label>
+            <button class="btn btn-primary" type="submit">Залишити заявку</button>
+          </form>
+        </div>
+        <div class="cta-hands">
+          <img src="img/hands.png" alt="Рукостискання" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contacts" class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-col footer-brand">
+        <div class="logo">
+          <div class="logo-badge">
+            <img src="img/logo-clean.png" alt="TEKS ENERGY" />
+          </div>
+          <div class="logo-text">
+            <span class="logo-main">TEKS</span>
+            <span class="logo-accent">ENERGY</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-columns">
+        <div class="footer-col">
+          <h4 data-i18n="footer_company">Компанія</h4>
+          <a href="about.html" data-i18n="nav_about">Про нас</a>
+          <a href="projects.html" data-i18n="nav_projects">Проєкти</a>
+          <a href="index.html#services" data-i18n="nav_services">Послуги</a>
+          <a href="#cta" data-i18n="footer_order">Замовити</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_services">Наші послуги</h4>
+          <a href="#" data-i18n="footer_service_1">Інженерні Мережі та Захист</a>
+          <a href="#" data-i18n="footer_service_2">Підключ. до електр. мереж</a>
+          <a href="#" data-i18n="footer_service_3">Будівництво і рек. підстанцій</a>
+          <a href="#" data-i18n="footer_service_4">Встановлення та підключення генераторів</a>
+          <a href="#" data-i18n="footer_service_5">Відновлювана Енергетика</a>
+          <a href="#" data-i18n="footer_service_6">Електротехнічна Лабораторія</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_links">Інші посилання</h4>
+          <a href="#" data-i18n="footer_link_1">Політика конфіденційності</a>
+          <a href="#" data-i18n="footer_link_2">Умови та положення</a>
+          <a href="#" data-i18n="footer_link_3">Послуги</a>
+          <a href="#" data-i18n="footer_link_4">Публікації</a>
+          <a href="#" data-i18n="footer_link_5">Центр обробки даних</a>
+          <a href="#" data-i18n="footer_link_6">Страхування</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="nav_contacts">Контакти</h4>
+          <span data-i18n="footer_address">18000, Україна, м. Черкаси,<br />вул. Енергетиків, 10</span>
+          <a href="mailto:info@teks-energy.com.ua">info@teks-energy.com.ua</a>
+          <a href="tel:+38047275XXXX">+38 (0472) 75-XX-XX</a>
+        </div>
+      </div>
+    </div>
+    <img class="footer-dots" src="img/footer-dots.png" alt="" />
+    <div class="footer-copy" data-i18n="footer_copy">©2026 TEKS ENERGY.</div>
+  </footer>
+</body>
+</html>

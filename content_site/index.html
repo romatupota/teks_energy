@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TEKS ENERGY — Електромонтажні роботи</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styil.css" />
+  <script src="from.js" defer></script>
+</head>
+<body>
+  <div class="page-glow"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-shell">
+        <div class="header-inner">
+          <div class="logo">
+            <div class="logo-badge">
+              <img src="img/logo-clean.png" alt="TEKS ENERGY" />
+            </div>
+            <div class="logo-text">
+              <span class="logo-main">TEKS</span>
+              <span class="logo-accent">ENERGY</span>
+            </div>
+          </div>
+
+          <nav class="nav">
+            <a class="nav-pill" href="#" data-i18n="nav_home">Головна</a>
+            <a class="nav-pill" href="#services" data-i18n="nav_services">Послуги</a>
+            <a class="nav-pill" href="projects.html" data-i18n="nav_projects">Проекти</a>
+            <a class="nav-pill" href="about.html" data-i18n="nav_about">Про нас</a>
+            <a class="nav-pill nav-accent" href="#cta" data-i18n="nav_consult">Замовити консультацію</a>
+            <a class="nav-pill" href="contacts.html" data-i18n="nav_contacts">Контакти</a>
+          </nav>
+
+          <div class="lang">
+            <button class="lang-pill is-active" type="button" data-lang="ua" aria-label="Українська">
+              <img src="img/flag-ua.png" alt="Українська" />
+            </button>
+            <button class="lang-pill" type="button" data-lang="en" aria-label="English">
+              <img src="img/flag-us.png" alt="English" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <h1 data-i18n="hero_title">Наші послуги<br />Електромонтажних&nbsp;робіт</h1>
+        <p data-i18n="hero_sub">Ваша довіра — наш результат</p>
+        <div class="hero-actions">
+          <a class="btn btn-outline" href="#services" data-i18n="hero_btn_services">Послуги</a>
+          <a class="btn btn-outline" href="contacts.html" data-i18n="hero_btn_contacts">Контакти</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section about">
+    <div class="container">
+      <div class="section-label" data-i18n="section_about">Про компанію</div>
+      <div class="about-grid">
+      <div class="about-logo">
+        <img src="img/about-logo.png" alt="Про компанію" />
+      </div>
+        <div class="about-card">
+          <p data-i18n="about_text">
+            <strong class="brand-orange">ТОВ «TEKS ENERGY»</strong> — компанія офіційно<br />
+            зареєстрована у 2024 році, її створення<br />
+            стало логічним кроком об'єднання<br />
+            багаторічного практичного досвіду<br />
+            двох ключових гравців енергетичного<br />
+            сектору Центральної України.
+          </p>
+          <a class="btn btn-outline" href="about.html" data-i18n="more_btn">Детальніше</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section services">
+    <div class="container">
+      <div class="section-label" data-i18n="section_services">Послуги компанії</div>
+      <div class="services-grid">
+        <article class="service-card">
+          <div class="service-media">
+            <img src="img/service-1.png" alt="Інженерні мережі та захист" />
+            <div class="service-label" data-i18n="service_1">Інженерні мережі<br />та захист</div>
+          </div>
+          <a class="btn btn-outline service-btn" href="service-engineering.html" data-i18n="order_service">Замовити послугу</a>
+        </article>
+        <article class="service-card">
+          <div class="service-media">
+            <img src="img/service-2.png" alt="Підключення до електричних мереж" />
+            <div class="service-label" data-i18n="service_2">Підключення<br />до електричних<br />мереж</div>
+          </div>
+          <a class="btn btn-outline service-btn" href="service-connection.html" data-i18n="order_service">Замовити послугу</a>
+        </article>
+        <article class="service-card">
+          <div class="service-media">
+            <img src="img/service-3.png" alt="Будівництво та реконструкція підстанцій" />
+            <div class="service-label" data-i18n="service_3">Будивніцтво<br />та реконструкція<br />підстанцій</div>
+          </div>
+          <a class="btn btn-outline service-btn" href="service-substations.html" data-i18n="order_service">Замовити послугу</a>
+        </article>
+        <article class="service-card">
+          <div class="service-media">
+            <img src="img/service-4.png" alt="Встановлення та підключення генераторів" />
+            <div class="service-label" data-i18n="service_4">Встановлення<br />та підключення<br />генераторів</div>
+          </div>
+          <a class="btn btn-outline service-btn" href="service-generators.html" data-i18n="order_service">Замовити послугу</a>
+        </article>
+        <article class="service-card">
+          <div class="service-media">
+            <img src="img/service-5.png" alt="Відновлювана Енергетика" />
+            <div class="service-label" data-i18n="service_5">Відновлювана<br />Енергетика</div>
+          </div>
+          <a class="btn btn-outline service-btn" href="service-renewable.html" data-i18n="order_service">Замовити послугу</a>
+        </article>
+        <article class="service-card">
+          <div class="service-media">
+            <img src="img/service-6.png" alt="Електротехнічна Лабораторія" />
+            <div class="service-label" data-i18n="service_6">Електротехнічна<br />Лабораторія</div>
+          </div>
+          <a class="btn btn-outline service-btn" href="service-laboratory.html" data-i18n="order_service">Замовити послугу</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section projects">
+    <div class="container">
+      <div class="section-label" data-i18n="section_projects">Реалізовані проєкти</div>
+      <div class="projects-panel">
+        <div class="projects-viewport">
+          <div class="projects-track">
+            <article class="project-card">
+              <div class="project-media">
+                <img src="img/case-1.png" alt="Проєкт" />
+                <button class="project-next-btn" type="button" aria-label="Наступний проєкт">
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+              <h3 data-i18n="project_title">Приєднання<br />когенераційних<br />установок</h3>
+              <button class="btn btn-project" data-i18n="more_btn">Детальніше</button>
+            </article>
+            <article class="project-card">
+              <div class="project-media">
+                <img src="img/case-2.png" alt="Проєкт" />
+                <button class="project-next-btn" type="button" aria-label="Наступний проєкт">
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+              <h3 data-i18n="project_title">Приєднання<br />когенераційних<br />установок</h3>
+              <button class="btn btn-project" data-i18n="more_btn">Детальніше</button>
+            </article>
+            <article class="project-card">
+              <div class="project-media">
+                <img src="img/case-3.png" alt="Проєкт" />
+                <button class="project-next-btn" type="button" aria-label="Наступний проєкт">
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+              <h3 data-i18n="project_title">Приєднання<br />когенераційних<br />установок</h3>
+              <button class="btn btn-project" data-i18n="more_btn">Детальніше</button>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section standards">
+    <div class="container">
+      <div class="section-label" data-i18n="section_standards">Наші стандарти роботи</div>
+      <div class="standards-grid">
+        <article class="standard-card">
+          <div class="standard-head">
+            <h3 data-i18n="standard_1_title">Гарантована якість</h3>
+            <span class="check">✓</span>
+          </div>
+          <p data-i18n="standard_1_text" class="standard-text">Тільки сертифіковані матеріали, що пройшли перевірку на реальних будівельних об’єктах. Ми обираємо те, чому довіряють професіонали.</p>
+        </article>
+        <article class="standard-card">
+          <div class="standard-head">
+            <h3 data-i18n="standard_2_title">Фахова допомога</h3>
+            <span class="check">✓</span>
+          </div>
+          <p data-i18n="standard_2_text" class="standard-text">Наші експерти допоможуть розрахувати об’єм матеріалів та підберуть оптимальні рішення для вашого технічного завдання.</p>
+        </article>
+        <article class="standard-card light">
+          <div class="standard-head">
+            <h3 data-i18n="standard_3_title">Швидка доставка</h3>
+            <span class="check">✓</span>
+          </div>
+          <p data-i18n="standard_3_text" class="standard-text">Оперативно доставляємо замовлення у будь-яке місто України.</p>
+        </article>
+        <article class="standard-card light">
+          <div class="standard-head">
+            <h3 data-i18n="standard_4_title">Справедлива ціна</h3>
+            <span class="check">✓</span>
+          </div>
+          <p data-i18n="standard_4_text" class="standard-text">Прозоре ціноутворення без націнок і прихованих платежів.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta" class="section cta">
+    <div class="container">
+      <div class="section-label" data-i18n="section_cta">Замовити послугу</div>
+      <div class="cta-grid">
+        <div class="cta-visual">
+          <div class="cta-image"></div>
+          <div class="cta-orb"></div>
+        </div>
+        <form class="cta-form" id="main-application-form">
+          <label>
+            <input type="text" id="app-name" placeholder="Ваше імʼя" required />
+          </label>
+          <label>
+            <input type="tel" id="app-phone" placeholder="+380 00 000 00 00" required />
+          </label>
+          <label>
+            <select id="app-service" required>
+              <option value="" selected disabled>Оберіть послугу</option>
+              <option value="Інженерні мережі">Інженерні мережі та захист</option>
+              <option value="Підключення">Підключення до електричних мереж</option>
+              <option value="Будівництво ПС">Будівництво та реконструкція підстанцій</option>
+              <option value="Генератори">Встановлення та підключення генераторів</option>
+              <option value="Енергетика">Відновлювана енергетика</option>
+              <option value="Лабораторія">Електротехнічна лабораторія</option>
+            </select>
+          </label>
+          <button class="btn btn-primary" type="submit">Залишити заявку</button>
+        </form>
+      </div>
+      <div class="cta-hands">
+        <img src="img/hands.png" alt="Рукостискання" />
+      </div>
+    </div>
+  </section>
+
+  <footer id="contacts" class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-col footer-brand">
+        <div class="logo">
+          <div class="logo-badge">
+            <img src="img/logo-clean.png" alt="TEKS ENERGY" />
+          </div>
+          <div class="logo-text">
+            <span class="logo-main">TEKS</span>
+            <span class="logo-accent">ENERGY</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-columns">
+        <div class="footer-col">
+          <h4 data-i18n="footer_company">Компанія</h4>
+          <a href="about.html" data-i18n="nav_about">Про нас</a>
+          <a href="projects.html" data-i18n="nav_projects">Проєкти</a>
+          <a href="#services" data-i18n="nav_services">Послуги</a>
+          <a href="#cta" data-i18n="footer_order">Замовити</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_services">Наші послуги</h4>
+          <a href="#" data-i18n="footer_service_1">Інженерні мережі та захист</a>
+          <a href="#" data-i18n="footer_service_2">Підключення до електричних мереж</a>
+          <a href="#" data-i18n="footer_service_3">Будивніцтво та реконструкція підстанцій</a>
+          <a href="#" data-i18n="footer_service_4">Водопостач., водовідвед. та меліор.</a>
+          <a href="#" data-i18n="footer_service_5">Відновлювана Енергетика</a>
+          <a href="#" data-i18n="footer_service_6">Електротехнічна Лабораторія</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer_links">Інші посилання</h4>
+          <a href="#" data-i18n="footer_link_1">Політика конфіденційності</a>
+          <a href="#" data-i18n="footer_link_2">Умови та положення</a>
+          <a href="#" data-i18n="footer_link_3">Послуги</a>
+          <a href="#" data-i18n="footer_link_4">Публікації</a>
+          <a href="#" data-i18n="footer_link_5">Центр обробки даних</a>
+          <a href="#" data-i18n="footer_link_6">Страхування</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="nav_contacts">Контакти</h4>
+          <span data-i18n="footer_address">18000, Україна, м. Черкаси,<br />вул. Енергетиків, 10</span>
+          <a href="mailto:info@teks-energy.com.ua">info@teks-energy.com.ua</a>
+          <a href="tel:+38047275XXXX">+38 (0472) 75-XX-XX</a>
+        </div>
+      </div>
+    </div>
+    <img class="footer-dots" src="img/footer-dots.png" alt="" />
+    <div class="footer-copy" data-i18n="footer_copy">©2026 TEKS ENERGY.</div>
+  </footer>
+</body>
+</html>

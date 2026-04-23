@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TEKS ENERGY — Проєкти</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styil.css" />
+  <script src="./from.js" defer></script>
+</head>
+<body class="projects-page">
+  <div class="page-glow"></div>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-shell">
+        <div class="header-inner">
+          <div class="logo">
+            <div class="logo-badge">
+              <img src="img/logo-clean.png" alt="TEKS ENERGY" />
+            </div>
+            <div class="logo-text">
+              <span class="logo-main">TEKS</span>
+              <span class="logo-accent">ENERGY</span>
+            </div>
+          </div>
+
+          <nav class="nav">
+            <a class="nav-pill" href="index.html">Головна</a>
+            <a class="nav-pill" href="index.html#services">Послуги</a>
+            <a class="nav-pill is-active" href="projects.html">Проекти</a>
+            <a class="nav-pill" href="about.html">Про нас</a>
+            <a class="nav-pill nav-accent" href="#cta">Замовити консультацію</a>
+            <a class="nav-pill" href="contacts.html">Контакти</a>
+          </nav>
+
+          <div class="lang">
+            <button class="lang-pill is-active" type="button" data-lang="ua">
+              <img src="img/flag-ua.png" alt="Українська" />
+            </button>
+            <button class="lang-pill" type="button" data-lang="en">
+              <img src="img/flag-us.png" alt="English" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="projects-catalog">
+      <div class="container">
+        <h1 class="projects-page-title">Реалізовані проєкти</h1>
+
+        <div class="projects-catalog-list" id="projects-container">
+            <p style="color: white; text-align: center;">Завантаження проектів...</p>
+        </div>
+
+        <div class="projects-pagination" id="pagination-container">
+          <a class="projects-pagination__item is-active" href="#">1</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="cta" class="section cta">
+      <div class="container">
+        <div class="section-label">Замовити послугу</div>
+        <div class="cta-grid">
+          <div class="cta-visual">
+            <div class="cta-image"></div>
+            <div class="cta-orb"></div>
+          </div>
+            <form class="cta-form" id="main-application-form">
+            <label>
+              <input type="text" id="app-name" placeholder="Ваше імʼя" required />
+            </label>
+            <label>
+              <input type="tel" id="app-phone" placeholder="+380 00 000 00 00" required />
+            </label>
+            <label>
+              <select id="app-service" required>
+                <option value="" selected disabled>Оберіть послугу</option>
+                <option value="Інженерні мережі">Інженерні мережі та захист</option>
+                <option value="Підключення">Підключення до електричних мереж</option>
+                <option value="Будівництво ПС">Будівництво та реконструкція підстанцій</option>
+                <option value="Генератори">Встановлення та підключення генераторів</option>
+                <option value="Енергетика">Відновлювана енергетика</option>
+                <option value="Лабораторія">Електротехнічна лабораторія</option>
+              </select>
+            </label>
+            <button class="btn btn-primary" type="submit">Залишити заявку</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-copy">©2026 TEKS ENERGY.</div>
+  </footer>
+</body>
+</html>
