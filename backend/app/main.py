@@ -1,12 +1,20 @@
 import os
+import cloudinary
+import cloudinary.uploader
 from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi import UploadFile, File
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import List
+
 from . import models, schemas, auth, database, crud
+
+cloudinary.config( 
+  cloud_name = "dohdugb5p", 
+  api_key = "727274989311534", 
+  api_secret = "czltXbr4R1LePYesKmwQzL7CuPw" 
+)
 
 models.Base.metadata.create_all(bind=database.engine)
 
@@ -15,15 +23,13 @@ app = FastAPI(title="TeksEnergy API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://teks-energy-admin-panel.onrender.com/",
+        "https://teks-energy-admin-panel.onrender.com",
         "https://teks-energy-content-site.onrender.com",
-        "http://localhost:5500",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 UPLOAD_DIR = "static/uploads"
 if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
@@ -40,37 +46,6 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         )
     access_token = auth.create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
-
-@app.post("/admins", response_model=schemas.UserOut)
-def create_admin(
-    user: schemas.UserCreate, 
-    db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user)
-):
-    db_user = crud.get_user_by_username(db, username=user.username)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Користувач вже існує")
-    return crud.create_user(db=db, user=user)
-
-@app.get("/admins", response_model=List[schemas.UserOut])
-def read_admins(
-    db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user)
-):
-    return crud.get_users(db)
-
-@app.delete("/admins/{username}")
-def delete_admin(
-    username: str,
-    db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user)
-):
-    if not current_user.is_superuser:
-        raise HTTPException(status_code=403, detail="Недостатньо прав")
-    success = crud.delete_user(db, username)
-    if not success:
-        raise HTTPException(status_code=404, detail="Адміна не знайдено")
-    return {"detail": f"Користувача {username} видалено"}
 
 @app.get("/content", response_model=List[schemas.ContentOut])
 def get_all_content(db: Session = Depends(database.get_db)):
@@ -96,39 +71,41 @@ def update_project(
         raise HTTPException(status_code=404, detail="Контент не знайдено")
     return updated_content
 
-@app.post("/upload")
-async def upload_file(
-    file: UploadFile = File(...),
+@app.delete("/content/{content_id}")
+def delete_project(
+    content_id: int,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user)
 ):
-    file_name = file.filename.replace(" ", "_")
-    file_path = f"{UPLOAD_DIR}/{file_name}"
-    
-    with open(file_path, "wb") as buffer:
-        buffer.write(await file.read())
+    success = crud.delete_content(db, content_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Контент не знайдено")
+    return {"detail": "Проєкт видалено"}
 
-    return {"url": f"http://127.0.0.1:8000/{file_path}"}
+@app.post("/upload")
+async def upload_file(file: UploadFile = File(...)):
+    try:
+        result = cloudinary.uploader.upload(file.file)
+        return {"url": result['secure_url']}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Помилка завантаження в хмару: {str(e)}")
 
 @app.post("/upload-multiple")
-async def upload_multiple_files(files: list[UploadFile] = File(...)):
+async def upload_multiple_files(files: List[UploadFile] = File(...)):
     urls = []
-    upload_dir = "static/uploads"
-    if not os.path.exists(upload_dir):
-        os.makedirs(upload_dir)
-
     for file in files:
-        file_path = os.path.join(upload_dir, file.filename)
-        with open(file_path, "wb") as buffer:
-            buffer.write(await file.read())
-        urls.append(f"http://127.0.0.1:8000/static/uploads/{file.filename}")
-    
+        try:
+            result = cloudinary.uploader.upload(file.file)
+            urls.append(result['secure_url'])
+        except Exception as e:
+            continue
     return urls
 
 @app.post("/applications", response_model=schemas.ApplicationOut)
 def send_application(app_data: schemas.ApplicationCreate, db: Session = Depends(database.get_db)):
-
     return crud.create_application(db=db, app_data=app_data)
 
-@app.get("/applications", response_model=list[schemas.ApplicationOut])
+@app.get("/applications", response_model=List[schemas.ApplicationOut])
 def read_applications(
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(auth.get_current_user)
@@ -137,4 +114,4 @@ def read_applications(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=10000)

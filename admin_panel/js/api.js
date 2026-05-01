@@ -251,7 +251,7 @@ async function loadContentList() {
             }
 
             container.innerHTML = data.map((item, index) => `
-                <div class="edit-card">
+                <div class="edit-card" id="card-${item.id}">
                     <div class="edit-card-header">
                         <span class="project-number">Проєкт №${index + 1}</span>
                         <span class="project-id">ID: ${item.id}</span>
@@ -271,7 +271,10 @@ async function loadContentList() {
                         </div>
                     </div>
 
-                    <button class="btn-save" onclick="updateContentWithFiles(${item.id})">Зберегти зміни</button>
+                    <div class="edit-actions" style="display: flex; gap: 10px;">
+                        <button class="btn-save" onclick="updateContentWithFiles(${item.id})">Зберегти зміни</button>
+                        <button class="btn-delete" onclick="deleteContent(${item.id})" style="background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer;">Видалити</button>
+                    </div>
                 </div>
             `).join('');
 
@@ -283,6 +286,32 @@ async function loadContentList() {
         console.log("Помилка завантаження контенту", e); 
     }
 }
+
+async function deleteContent(id) {
+    if (!confirm("Ви впевнені, що хочете видалити цей проєкт?")) return;
+
+    const token = localStorage.getItem('access_token');
+    try {
+        const response = await fetch(`${API_URL}/content/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            alert("Видалено успішно!");
+            loadContentList(); 
+        } else {
+            const error = await response.json();
+            alert("Помилка: " + (error.detail || "Не вдалося видалити"));
+        }
+    } catch (err) {
+        console.error("Помилка при видаленні:", err);
+    }
+}
+
+window.deleteContent = deleteContent;
 
 async function updateContent(id) {
     const title = document.getElementById(`title-${id}`).value;

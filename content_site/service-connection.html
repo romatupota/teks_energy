@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TEKS ENERGY — Підключення до електричних мереж</title>
+  <title data-i18n="page_title_service_2">TEKS ENERGY — Підключення до електричних мереж та збільшення потужності</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -50,7 +50,7 @@
   </header>
 
   <main>
-    <section class="project-detail project-detail--compact">
+    <section class="project-detail project-detail--service-2">
       <div class="container project-detail__container">
         <div class="project-detail__intro" data-i18n="connection_intro">
           Ми забезпечуємо повний спектр інженерно-будівельних послуг, необхідних для створення та модернізації енергетичних об'єктів та інфраструктури.
@@ -59,18 +59,18 @@
         <div class="project-detail__hero">
           <div class="project-detail__visual">
             <div class="project-detail__image-frame">
-              <img src="img/service-2.png" alt="Підключення до електричних мереж" />
+              <img src="img/service-2.png" alt="Підключення до електричних мереж та збільшення потужності" />
             </div>
           </div>
 
           <div class="project-detail__content">
             <div class="project-detail__badges">
               <span class="project-detail__badge project-detail__badge--accent" data-i18n="connection_direction_label">Напрямок 02:</span>
-              <span class="project-detail__badge project-detail__badge--soft" data-i18n="connection_direction_value">Підключення<br />до електричних<br />мереж</span>
+              <span class="project-detail__badge project-detail__badge--soft" data-i18n="connection_direction_value">Підключення до електричних мереж та збільшення потужності</span>
             </div>
 
             <div class="project-detail__description" data-i18n="connection_description">
-              Надаємо комплексні послуги з легалізації та збільшення потужностей.
+              Ми можемо проектувати мережі для стандартного підключення, все залежить від географічних і технічних параметрів об'єкта. Якщо об'єкту не вистачає потужності, ми можемо її збільшити.
             </div>
           </div>
         </div>
@@ -78,15 +78,27 @@
         <div class="project-detail__features">
           <article class="detail-feature detail-feature--light">
             <span class="detail-feature__num">01</span>
-            <p data-i18n="connection_feature_1">Проєктуємо мережі для стандартного та нестандартного підключення.</p>
+            <p data-i18n="connection_feature_1">Збираємо дані, рахуємо вартість та окупність Вашого проекту.</p>
           </article>
           <article class="detail-feature detail-feature--dark">
             <span class="detail-feature__num">02</span>
-            <p data-i18n="connection_feature_2">Аналіз географічних і технічних параметрів об'єкта.</p>
+            <p data-i18n="connection_feature_2">Підбір земельної ділянки під потреби проекту. Аналіз електромереж поруч, землевідведення, зміна цільового призначення ділянки.</p>
           </article>
           <article class="detail-feature detail-feature--dark-blue">
             <span class="detail-feature__num">03</span>
-            <p data-i18n="connection_feature_3">Збільшення електричної потужності об’єктів будь-якої складності.</p>
+            <p data-i18n="connection_feature_3">Технічне та економічне обґрунтування проекту, розробка схем підключення та видачі потужності об'єкту.</p>
+          </article>
+          <article class="detail-feature detail-feature--light">
+            <span class="detail-feature__num">04</span>
+            <p data-i18n="connection_feature_4">Проектно-вишукувальні роботи, геодезія та геологія, підготовка об'єкту до будівництва.</p>
+          </article>
+          <article class="detail-feature detail-feature--light">
+            <span class="detail-feature__num">05</span>
+            <p data-i18n="connection_feature_5">Готуємо всю проектну документацію, узгоджуємо все в необхідних інстанціях та проходимо державну експертизу. Отримуємо дозвіл на будівництво.</p>
+          </article>
+          <article class="detail-feature detail-feature--dark">
+            <span class="detail-feature__num">06</span>
+            <p data-i18n="connection_feature_6">Підбір комплектувальних панелей, інверторів для майбутньої СЕС. Логістика, зберігання та транспортування на об'єкт всіх модулів станції.</p>
           </article>
         </div>
 
@@ -101,25 +113,25 @@
             <div class="cta-image"></div>
             <div class="cta-orb"></div>
           </div>
-            <form class="cta-form" id="main-application-form">
+          <form class="cta-form">
             <label>
-              <input type="text" id="app-name" placeholder="Ваше імʼя" required />
+              <input type="text" placeholder="Ваше імʼя" data-i18n-placeholder="form_name_placeholder" />
             </label>
             <label>
-              <input type="tel" id="app-phone" placeholder="+380 00 000 00 00" required />
+              <input type="tel" placeholder="+380 00 000 00 00" value="+380 " data-i18n-placeholder="form_phone_placeholder" />
             </label>
             <label>
-              <select id="app-service" required>
-                <option value="" selected disabled>Оберіть послугу</option>
-                <option value="Інженерні мережі">Інженерні мережі та захист</option>
-                <option value="Підключення">Підключення до електричних мереж</option>
-                <option value="Будівництво ПС">Будівництво та реконструкція підстанцій</option>
-                <option value="Генератори">Встановлення та підключення генераторів</option>
-                <option value="Енергетика">Відновлювана енергетика</option>
-                <option value="Лабораторія">Електротехнічна лабораторія</option>
+              <select>
+                <option value="" selected disabled data-i18n="form_option_placeholder">Оберіть послугу</option>
+                <option data-i18n="form_option_1">Проектування і будівництво мереж електропостачання</option>
+                <option data-i18n="form_option_2">Підключення до електричних мереж та збільшення потужності</option>
+                <option data-i18n="form_option_3">Будивніцтво та реконструкція підстанцій</option>
+                <option data-i18n="form_option_4">Встановлення та підключення генераторів</option>
+                <option data-i18n="form_option_5">Відновлювана енергетика</option>
+                <option data-i18n="form_option_6">Електротехнічна лабораторія</option>
               </select>
             </label>
-            <button class="btn btn-primary" type="submit">Залишити заявку</button>
+            <button class="btn btn-primary" type="submit" data-i18n="form_submit">Залишити заявку</button>
           </form>
         </div>
         <div class="cta-hands">
@@ -152,8 +164,8 @@
         </div>
         <div class="footer-col">
           <h4 data-i18n="footer_services">Наші послуги</h4>
-          <a href="#" data-i18n="footer_service_1">Інженерні Мережі та Захист</a>
-          <a href="#" data-i18n="footer_service_2">Підключення до електричних мереж</a>
+          <a href="#" data-i18n="footer_service_1">Проектування і будівництво мереж електропостачання</a>
+          <a href="#" data-i18n="footer_service_2">Підключення до електричних мереж та збільшення потужності</a>
           <a href="#" data-i18n="footer_service_3">Будівництво і рек. підстанцій</a>
           <a href="#" data-i18n="footer_service_4">Водопостач., водовідвед. та меліор.</a>
           <a href="#" data-i18n="footer_service_5">Відновлювана Енергетика</a>
@@ -171,8 +183,8 @@
         <div class="footer-col">
           <h4 data-i18n="nav_contacts">Контакти</h4>
           <span data-i18n="footer_address">18000, Україна, м. Черкаси,<br />вул. Енергетиків, 10</span>
-          <a href="mailto:info@teks-energy.com.ua">info@teks-energy.com.ua</a>
-          <a href="tel:+38047275XXXX">+38 (0472) 75-XX-XX</a>
+          <a href="mailto:teksenergy.company@gmail.com">teksenergy.company@gmail.com</a>
+          <a href="tel:+380982757054">+380 98 275 70 54</a>
         </div>
       </div>
     </div>

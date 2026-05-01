@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TEKS ENERGY — Відновлювана енергетика</title>
+  <title data-i18n="page_title_service_5">TEKS ENERGY — Відновлювана енергетика</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -50,7 +50,7 @@
   </header>
 
   <main>
-    <section class="project-detail project-detail--compact project-detail--generators project-detail--renewable">
+    <section class="project-detail project-detail--renewable">
       <div class="container project-detail__container">
         <div class="project-detail__hero">
           <div class="project-detail__visual">
@@ -66,7 +66,7 @@
             </div>
 
             <div class="project-detail__description" data-i18n="renewable_description">
-              Рішення «під ключ» для інвестиційних проєктів у сфері «зеленої» енергетики.
+              Ми впроваджуємо ефективні рішення у сфері відновлюваної енергетики для зниження витрат на електроенергію та підвищення енергонезалежності. Проєктуємо та встановлюємо системи на базі сонячної та альтернативної енергії з урахуванням особливостей об’єкта та потреб клієнта. Забезпечуємо повний цикл робіт — від аналізу та підбору обладнання до монтажу, налаштування та подальшого обслуговування. Гарантуємо стабільну, безпечну та ефективну роботу системи в будь-яких умовах.
             </div>
           </div>
         </div>
@@ -74,15 +74,27 @@
         <div class="project-detail__features">
           <article class="detail-feature detail-feature--light">
             <span class="detail-feature__num">01</span>
-            <p data-i18n="renewable_feature_1">Будівництво промислових сонячних електростанцій (СЕС).</p>
+            <p data-i18n="renewable_feature_1">Аналіз об’єкта та енергоспоживання Оцінюємо умови встановлення, рівень споживання електроенергії та потенціал використання відновлюваних джерел.</p>
           </article>
           <article class="detail-feature detail-feature--dark">
             <span class="detail-feature__num">02</span>
-            <p data-i18n="renewable_feature_2">Будівництво індивідуальних сонячних електростанцій (для бізнесу та приватних осіб).</p>
+            <p data-i18n="renewable_feature_2">Проєктування енергосистеми Розробляємо індивідуальне рішення з урахуванням ваших потреб, бюджету та технічних особливостей об’єкта.</p>
           </article>
           <article class="detail-feature detail-feature--dark-blue">
             <span class="detail-feature__num">03</span>
-            <p data-i18n="renewable_feature_3">Підключення до мережі та повне оформлення «зеленого» тарифу.</p>
+            <p data-i18n="renewable_feature_3">Підбір обладнання Обираємо оптимальні сонячні панелі, інвертори, акумулятори та інші компоненти для максимальної ефективності.</p>
+          </article>
+          <article class="detail-feature detail-feature--light">
+            <span class="detail-feature__num">04</span>
+            <p data-i18n="renewable_feature_4">Монтаж та підключення системи Виконуємо встановлення обладнання та інтеграцію з існуючою електромережею відповідно до стандартів безпеки.</p>
+          </article>
+          <article class="detail-feature detail-feature--light">
+            <span class="detail-feature__num">05</span>
+            <p data-i18n="renewable_feature_5">Налаштування та оптимізація роботи Конфігуруємо систему для стабільної генерації енергії, контролю та ефективного використання ресурсів.</p>
+          </article>
+          <article class="detail-feature detail-feature--dark">
+            <span class="detail-feature__num">06</span>
+            <p data-i18n="renewable_feature_6">Обслуговування та підтримка Проводимо регулярний моніторинг, технічне обслуговування та надаємо консультації для безперебійної роботи системи.</p>
           </article>
         </div>
 
@@ -97,26 +109,26 @@
             <div class="cta-image"></div>
             <div class="cta-orb"></div>
           </div>
-            <form class="cta-form" id="main-application-form">
-              <label>
-                <input type="text" id="app-name" placeholder="Ваше імʼя" required />
-              </label>
-              <label>
-                <input type="tel" id="app-phone" placeholder="+380 00 000 00 00" required />
-              </label>
-              <label>
-                <select id="app-service" required>
-                  <option value="" selected disabled>Оберіть послугу</option>
-                  <option value="Інженерні мережі">Інженерні мережі та захист</option>
-                  <option value="Підключення">Підключення до електричних мереж</option>
-                  <option value="Будівництво ПС">Будівництво та реконструкція підстанцій</option>
-                  <option value="Генератори">Встановлення та підключення генераторів</option>
-                  <option value="Енергетика">Відновлювана енергетика</option>
-                  <option value="Лабораторія">Електротехнічна лабораторія</option>
-                </select>
-              </label>
-              <button class="btn btn-primary" type="submit">Залишити заявку</button>
-            </form> 
+          <form class="cta-form">
+            <label>
+              <input type="text" placeholder="Ваше імʼя" data-i18n-placeholder="form_name_placeholder" />
+            </label>
+            <label>
+              <input type="tel" placeholder="+380 00 000 00 00" value="+380 " data-i18n-placeholder="form_phone_placeholder" />
+            </label>
+            <label>
+              <select>
+                <option value="" selected disabled data-i18n="form_option_placeholder">Оберіть послугу</option>
+                <option data-i18n="form_option_1">Проектування і будівництво мереж електропостачання</option>
+                <option data-i18n="form_option_2">Підключення до електричних мереж та збільшення потужності</option>
+                <option data-i18n="form_option_3">Будивніцтво та реконструкція підстанцій</option>
+                <option data-i18n="form_option_4">Встановлення та підключення генераторів</option>
+                <option data-i18n="form_option_5">Відновлювана енергетика</option>
+                <option data-i18n="form_option_6">Електротехнічна лабораторія</option>
+              </select>
+            </label>
+            <button class="btn btn-primary" type="submit" data-i18n="form_submit">Залишити заявку</button>
+          </form>
         </div>
         <div class="cta-hands">
           <img src="img/hands.png" alt="Рукостискання" />
@@ -148,8 +160,8 @@
         </div>
         <div class="footer-col">
           <h4 data-i18n="footer_services">Наші послуги</h4>
-          <a href="#" data-i18n="footer_service_1">Інженерні Мережі та Захист</a>
-          <a href="#" data-i18n="footer_service_2">Підключ. до електр. мереж</a>
+          <a href="#" data-i18n="footer_service_1">Проектування і будівництво мереж електропостачання</a>
+          <a href="#" data-i18n="footer_service_2">Підключення до електричних мереж та збільшення потужності</a>
           <a href="#" data-i18n="footer_service_3">Будівництво і рек. підстанцій</a>
           <a href="#" data-i18n="footer_service_4">Водопостач., водовідвед. та меліор.</a>
           <a href="#" data-i18n="footer_service_5">Відновлювана Енергетика</a>
@@ -167,8 +179,8 @@
         <div class="footer-col">
           <h4 data-i18n="nav_contacts">Контакти</h4>
           <span data-i18n="footer_address">18000, Україна, м. Черкаси,<br />вул. Енергетиків, 10</span>
-          <a href="mailto:info@teks-energy.com.ua">info@teks-energy.com.ua</a>
-          <a href="tel:+38047275XXXX">+38 (0472) 75-XX-XX</a>
+          <a href="mailto:teksenergy.company@gmail.com">teksenergy.company@gmail.com</a>
+          <a href="tel:+380982757054">+380 98 275 70 54</a>
         </div>
       </div>
     </div>

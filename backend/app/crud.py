@@ -67,5 +67,13 @@ def create_application(db: Session, app_data: schemas.ApplicationCreate):
     db.refresh(db_app)
     return db_app
 
+def delete_content(db: Session, content_id: int):
+    db_content = db.query(models.Content).filter(models.Content.id == content_id).first()
+    if db_content:
+        db.delete(db_content)
+        db.commit()
+        return True
+    return False
+
 def get_applications(db: Session):
     return db.query(models.Application).order_by(models.Application.created_at.desc()).all()

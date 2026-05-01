@@ -168,3 +168,8 @@ tr:hover {
         grid-template-columns: 1fr;
     }
 }
+
+.preview-item {
+    width: 100px;
+    height: 100px;
+}
