@@ -16,8 +16,9 @@ class Content(Base):
     __tablename__ = "content"
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
+    short_description = Column(String(255), nullable=True)
     body = Column(String)
-    image_url = Column(String)  # Основне фото
+    image_url = Column(String)
     additional_images = Column(String, default="")
     owner_id = Column(Integer, ForeignKey("users.id"))
 

@@ -259,6 +259,7 @@ async function loadContentList() {
                     
                     <div class="edit-fields">
                         <input type="text" id="edit-title-${item.id}" value="${item.title}" placeholder="Назва">
+                        <input type="text" id="short-desc-${item.id}" value="${item.short_description || ''}" placeholder="Короткий опис для картки">
                         <textarea id="edit-body-${item.id}" rows="3">${item.body}</textarea>
                     </div>
 

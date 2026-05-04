@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from . import models, schemas, auth
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
+import pytz
 
 offset = timezone(timedelta(hours=3))
 
@@ -56,16 +57,20 @@ def update_content(db: Session, content_id: int, content_update: schemas.Content
         db.refresh(db_content)
     return db_content
 
+kyiv_tz = pytz.timezone('Europe/Kyiv')
+
 def create_application(db: Session, app_data: schemas.ApplicationCreate):
-    db_app = models.Application(
-        user_name=app_data.user_name,
-        user_phone=app_data.user_phone,
-        service_type=app_data.service_type
+    
+    current_time = datetime.now(kyiv_tz) 
+    
+    db_application = models.Application(
+        **app_data.dict(),
+        created_at=current_time
     )
-    db.add(db_app)
+    db.add(db_application)
     db.commit()
-    db.refresh(db_app)
-    return db_app
+    db.refresh(db_application)
+    return db_application
 
 def delete_content(db: Session, content_id: int):
     db_content = db.query(models.Content).filter(models.Content.id == content_id).first()

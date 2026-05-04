@@ -21,6 +21,7 @@ class Token(BaseModel):
 class ContentBase(BaseModel):
     title: str
     body: str
+    short_description: Optional[str] = None
     image_url: Optional[str] = None
     additional_images: Optional[str] = "" 
 
@@ -30,6 +31,7 @@ class ContentCreate(ContentBase):
 class ContentUpdate(BaseModel):
     title: Optional[str] = None
     body: Optional[str] = None
+    short_description: Optional[str] = None
     image_url: Optional[str] = None
     additional_images: Optional[str] = None
 
