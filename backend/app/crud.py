@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from . import models, schemas, auth
-from datetime import datetime
-from pytz import timezone, timedelta
+from datetime import datetime, timedelta, timezone
+import pytz
 
 offset = timezone(timedelta(hours=3))
 
