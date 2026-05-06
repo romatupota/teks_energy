@@ -79,7 +79,6 @@ def create_project(
     )
     return crud.create_content(db=db, content=project_data, owner_id=current_user.id)
 
-# 4. Оновити проєкт
 @app.patch("/content/{content_id}", response_model=schemas.ContentOut)
 def update_project(
     content_id: int,
@@ -133,17 +132,6 @@ def read_applications(
     current_user: models.User = Depends(auth.get_current_user)
 ):
     return crud.get_applications(db)
-
-@app.delete("/applications/{app_id}")
-def delete_application(
-    app_id: int, 
-    db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user)
-):
-    success = crud.delete_application(db, app_id)
-    if not success:
-        raise HTTPException(status_code=404, detail="Заявку не знайдено")
-    return {"detail": "Заявку видалено"}
 
 @app.delete("/applications/{app_id}")
 def delete_application(

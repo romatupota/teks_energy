@@ -49,7 +49,7 @@ class ItemUpdate(BaseModel):
 class ApplicationCreate(BaseModel):
     user_name: str
     user_phone: str
-    service_type: str
+    service_type: Optional[str] = None
 
 class ApplicationOut(ApplicationCreate):
     id: int

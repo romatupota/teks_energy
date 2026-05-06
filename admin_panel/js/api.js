@@ -446,7 +446,7 @@ async function updateContentWithFiles(id) {
     const bodyInput = document.getElementById(`edit-body-${id}`);
     const fileInput = document.getElementById(`edit-file-${id}`);
     const token = localStorage.getItem('access_token');
-    const shortDescValue = document.getElementById(`edit-short-desc-${id}`).value;
+    const shortDescValue = document.getElementById(`short-desc-${id}`).value;
     
     formData.append('title', document.getElementById(`edit-title-${id}`).value);
     formData.append('body', document.getElementById(`edit-body-${id}`).value);
