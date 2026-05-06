@@ -26,7 +26,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://teks-energy-admin-panel.onrender.com",
-        "https://teks-energy-content-site.onrender.com",
+        "https://teks.energy",
+        "https://www.teks.energy",
         "http://localhost:5500",
         "http://127.0.0.1:5500",
     ],
