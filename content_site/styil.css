@@ -277,7 +277,7 @@ select {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-image: url("img/hero-base.png");
+  background-image: url("./img/hero-base.png");
   background-size: cover;
   background-position: center;
   filter: none;
@@ -291,7 +291,7 @@ select {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("img/hero-overlay.png") center/cover no-repeat;
+  background: url("./img/hero-overlay.png") center/cover no-repeat;
   opacity: 0.3;
 }
 
@@ -841,7 +841,7 @@ select {
   height: 350px;
   border-radius: 0;
   background-color: #030410;
-  background-image: url("img/cta.png");
+  background-image: url("./img/cta.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1066,12 +1066,21 @@ select {
   align-items: start;
 }
 
+.about-page .power-left {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  margin-right: -160px;
+  margin-top: 12px;
+}
+
 .about-page .power-left h2 {
-  font-size: 32px;
+  font-size: 28px;
   margin-bottom: 20px;
 }
 
 .about-page .power-left p {
+  max-width: 620px;
   color: var(--muted);
   margin-bottom: 16px;
 }
@@ -1086,6 +1095,8 @@ select {
 }
 
 .about-page .power-right {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1098,7 +1109,7 @@ select {
   max-width: none;
   align-self: flex-end;
   margin-top: -70px;
-  margin-right: -120px;
+  margin-right: -175px;
   filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.45));
 }
 
@@ -2666,6 +2677,14 @@ select {
     grid-template-columns: 1fr;
   }
 
+  .project-detail--substations .project-detail__hero,
+  .project-detail--generators .project-detail__hero,
+  .project-detail--renewable .project-detail__hero,
+  .project-detail--laboratory .project-detail__hero {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
   .project-detail__visual {
     max-width: 460px;
     margin: 0 auto;
@@ -2684,37 +2703,22 @@ select {
     max-width: 100%;
   }
 
-  .project-detail--service-1 .project-detail__badge--soft {
+  .project-detail--service-1 .project-detail__badge--soft,
+  .project-detail--service-2 .project-detail__badge--soft,
+  .project-detail--substations .project-detail__badge--soft,
+  .project-detail--generators .project-detail__badge--soft,
+  .project-detail--renewable .project-detail__badge--soft,
+  .project-detail--laboratory .project-detail__badge--soft {
     min-width: 0;
     width: 100%;
     white-space: normal;
   }
 
-  .project-detail--service-1 .project-detail__description {
-    min-height: auto;
-    margin-top: 26px;
-  }
-
-  .project-detail--service-2 .project-detail__badge--soft {
-    min-width: 0;
-    width: 100%;
-  }
-
-  .project-detail--service-2 .project-detail__description {
-    min-height: auto;
-    margin-top: 26px;
-  }
-
-  .project-detail--substations .project-detail__description {
-    min-height: auto;
-    margin-top: 26px;
-  }
-
-  .project-detail--renewable .project-detail__description {
-    min-height: auto;
-    margin-top: 26px;
-  }
-
+  .project-detail--service-1 .project-detail__description,
+  .project-detail--service-2 .project-detail__description,
+  .project-detail--substations .project-detail__description,
+  .project-detail--generators .project-detail__description,
+  .project-detail--renewable .project-detail__description,
   .project-detail--laboratory .project-detail__description {
     min-height: auto;
     margin-top: 26px;
@@ -2723,6 +2727,17 @@ select {
   .project-detail__features {
     grid-template-columns: 1fr;
     margin-left: 0;
+  }
+
+  .project-detail--service-2 .project-detail__features,
+  .project-detail--substations .project-detail__features,
+  .project-detail--generators .project-detail__features,
+  .project-detail--renewable .project-detail__features,
+  .project-detail--laboratory .project-detail__features {
+    grid-template-columns: 1fr;
+    margin-left: 0;
+    max-width: none;
+    padding-left: 0;
   }
 
   .project-detail--compact .project-detail__badges {
@@ -2748,26 +2763,9 @@ select {
     margin-left: 0;
   }
 
-  .project-detail--substations .project-detail__features {
-    max-width: none;
-    padding-left: 0;
-  }
-
-  .project-detail--generators .project-detail__features {
-    max-width: none;
-    padding-left: 0;
-  }
-
-  .project-detail--renewable .project-detail__features {
-    margin: 10px 0 0;
-    max-width: none;
-    padding-left: 0;
-  }
-
+  .project-detail--renewable .project-detail__features,
   .project-detail--laboratory .project-detail__features {
     margin: 10px 0 0;
-    max-width: none;
-    padding-left: 0;
   }
 
   .about-page .power-grid {
@@ -3457,6 +3455,19 @@ select {
     font-size: 16px;
   }
 
+  .project-detail--service-2 .project-detail__badge,
+  .project-detail--substations .project-detail__badge,
+  .project-detail--generators .project-detail__badge,
+  .project-detail--renewable .project-detail__badge,
+  .project-detail--laboratory .project-detail__badge {
+    width: 100%;
+    min-width: 0;
+    min-height: auto;
+    padding: 12px 16px;
+    font-size: 16px;
+    text-align: center;
+  }
+
   .project-detail--compact .project-detail__badge {
     font-size: 14px;
   }
@@ -3467,75 +3478,53 @@ select {
     font-size: 17px;
   }
 
-  .project-detail--service-1 .project-detail__badge--soft {
+  .project-detail--service-1 .project-detail__badge--soft,
+  .project-detail--service-2 .project-detail__badge--soft,
+  .project-detail--substations .project-detail__badge--soft,
+  .project-detail--generators .project-detail__badge--soft,
+  .project-detail--renewable .project-detail__badge--soft,
+  .project-detail--laboratory .project-detail__badge--soft {
     font-size: 15px;
     padding: 14px 16px;
   }
 
-  .project-detail--service-1 .project-detail__description {
+  .project-detail--service-1 .project-detail__description,
+  .project-detail--service-2 .project-detail__description,
+  .project-detail--substations .project-detail__description,
+  .project-detail--generators .project-detail__description,
+  .project-detail--renewable .project-detail__description,
+  .project-detail--laboratory .project-detail__description {
     padding: 22px 20px;
     font-size: 14px;
     line-height: 1.55;
   }
 
-  .project-detail--service-1 .detail-feature {
+  .project-detail--service-1 .detail-feature,
+  .project-detail--service-2 .detail-feature,
+  .project-detail--substations .detail-feature,
+  .project-detail--generators .detail-feature,
+  .project-detail--renewable .detail-feature,
+  .project-detail--laboratory .detail-feature {
     min-height: 132px;
     grid-template-columns: 60px minmax(0, 1fr);
     padding: 18px 18px;
   }
 
-  .project-detail--service-1 .detail-feature__num {
+  .project-detail--service-1 .detail-feature__num,
+  .project-detail--service-2 .detail-feature__num,
+  .project-detail--substations .detail-feature__num,
+  .project-detail--generators .detail-feature__num,
+  .project-detail--renewable .detail-feature__num,
+  .project-detail--laboratory .detail-feature__num {
     font-size: 40px;
   }
 
-  .project-detail--service-1 .detail-feature p {
-    font-size: 13px;
-    line-height: 1.4;
-  }
-
-  .project-detail--service-2 .project-detail__badge--soft {
-    font-size: 15px;
-    padding: 14px 16px;
-  }
-
-  .project-detail--service-2 .project-detail__description {
-    padding: 22px 20px;
-    font-size: 14px;
-    line-height: 1.55;
-  }
-
-  .project-detail--service-2 .detail-feature {
-    min-height: 132px;
-    grid-template-columns: 60px minmax(0, 1fr);
-    padding: 18px 18px;
-  }
-
-  .project-detail--service-2 .detail-feature__num {
-    font-size: 40px;
-  }
-
-  .project-detail--service-2 .detail-feature p {
-    font-size: 13px;
-    line-height: 1.4;
-  }
-
-  .project-detail--substations .project-detail__description {
-    padding: 22px 20px;
-    font-size: 14px;
-    line-height: 1.55;
-  }
-
-  .project-detail--substations .detail-feature {
-    min-height: 132px;
-    grid-template-columns: 60px minmax(0, 1fr);
-    padding: 18px 18px;
-  }
-
-  .project-detail--substations .detail-feature__num {
-    font-size: 40px;
-  }
-
-  .project-detail--substations .detail-feature p {
+  .project-detail--service-1 .detail-feature p,
+  .project-detail--service-2 .detail-feature p,
+  .project-detail--substations .detail-feature p,
+  .project-detail--generators .detail-feature p,
+  .project-detail--renewable .detail-feature p,
+  .project-detail--laboratory .detail-feature p {
     font-size: 13px;
     line-height: 1.4;
   }
@@ -3545,80 +3534,15 @@ select {
     padding: 22px 20px;
   }
 
-  .project-detail--substations .project-detail__badge {
-    width: 100%;
-    min-width: 0;
-  }
-
   .project-detail--substations .project-detail__badge--soft {
     white-space: normal;
   }
 
-  .project-detail--generators .project-detail__badge {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .project-detail--renewable .project-detail__badge {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .project-detail--laboratory .project-detail__badge {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .project-detail--substations .project-detail__description {
-    max-width: 100%;
-  }
-
-  .project-detail--generators .project-detail__description {
-    max-width: 100%;
-  }
-
-  .project-detail--renewable .project-detail__description {
-    max-width: 100%;
-    padding: 22px 20px;
-    font-size: 14px;
-    line-height: 1.55;
-  }
-
+  .project-detail--substations .project-detail__description,
+  .project-detail--generators .project-detail__description,
+  .project-detail--renewable .project-detail__description,
   .project-detail--laboratory .project-detail__description {
     max-width: 100%;
-    padding: 22px 20px;
-    font-size: 14px;
-    line-height: 1.55;
-  }
-
-  .project-detail--renewable .detail-feature {
-    min-height: 132px;
-    grid-template-columns: 60px minmax(0, 1fr);
-    padding: 18px 18px;
-  }
-
-  .project-detail--laboratory .detail-feature {
-    min-height: 132px;
-    grid-template-columns: 60px minmax(0, 1fr);
-    padding: 18px 18px;
-  }
-
-  .project-detail--renewable .detail-feature__num {
-    font-size: 40px;
-  }
-
-  .project-detail--laboratory .detail-feature__num {
-    font-size: 40px;
-  }
-
-  .project-detail--renewable .detail-feature p {
-    font-size: 13px;
-    line-height: 1.4;
-  }
-
-  .project-detail--laboratory .detail-feature p {
-    font-size: 13px;
-    line-height: 1.4;
   }
 
   .detail-feature {

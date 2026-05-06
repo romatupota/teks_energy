@@ -38,6 +38,7 @@ def create_content(db: Session, content: schemas.ContentCreate, owner_id: int):
     db_content = models.Content(
         title=content.title,
         body=content.body,
+        short_description=content.short_description,
         image_url=content.image_url,
         additional_images=content.additional_images,
         owner_id=owner_id
@@ -71,6 +72,14 @@ def create_application(db: Session, app_data: schemas.ApplicationCreate):
     db.commit()
     db.refresh(db_application)
     return db_application
+
+def delete_application(db: Session, app_id: int):
+    db_app = db.query(models.Application).filter(models.Application.id == app_id).first()
+    if db_app:
+        db.delete(db_app)
+        db.commit()
+        return True
+    return False
 
 def delete_content(db: Session, content_id: int):
     db_content = db.query(models.Content).filter(models.Content.id == content_id).first()

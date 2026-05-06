@@ -51,11 +51,11 @@ const translations = {
       "Надійність, підтверджену роками стабільної роботи наших засновників.",
     about_page_power_title: "Сучасна інженерно-будівельна потужність",
     about_page_power_text_1:
-      "<strong>Сьогодні TEKS ENERGY</strong> — це сучасна структура, що працює на перетині традиційної якості та передових технологій.",
+      "<strong>Сьогодні TEKS ENERGY</strong> — це сучасна структура,<br />що працює на перетині традиційної якості<br />та передових технологій.",
     about_page_power_text_2:
-      "Ми сформували модель компанії, яка здатна забезпечити повний цикл робіт: від проектування до будівництва та введення в експлуатацію.",
+      "Ми сформували модель компанії, яка здатна<br />забезпечити повний цикл робіт: від проектування<br />до будівництва та введення в експлуатацію.",
     about_page_power_text_3:
-      "Ми не просто будуємо — ми створюємо стійку інфраструктуру, використовуючи найсучасніші інженерні рішення.",
+      "Ми не просто будуємо — ми створюємо<br />стійку інфраструктуру, використовуючи<br />найсучасніші інженерні рішення.",
     about_page_challenges_title: "Готовність до найскладніших<br />викликів",
     about_page_challenges_text_1:
       "Ми вийшли на ринок як потужний гравець, готовий брати на себе відповідальність за найскладніші інфраструктурні виклики.",
@@ -99,6 +99,11 @@ const translations = {
     section_projects: "Реалізовані проєкти",
     projects_page_title: "Реалізовані проєкти",
     project_view: "Переглянути проект",
+    home_project_1_title: "Городище.<br />Встановлення вежі звʼязку",
+    home_project_2_title: "Приєднання до електричних мереж<br />ПАТ \"Черкасиобленерго\" електроустановок<br />будівельного майданчика",
+    home_project_3_title: "Стандартне приєднання до електричних мереж<br />ПАТ \"Черкасиобленерго\" електроустановок<br />житлових будинків",
+    home_project_4_title: "Приєднання до електричних мереж<br />ПАТ \"Черкасиобленерго\" нежитлового приміщення<br />(заклад громадського харчування)",
+    home_project_5_title: "Реконструкція повітряної лінії 0,4 кВ<br />від ТП-124 Л-1, Л-3 з улаштуванням<br />розвантажувальних ТП 10/0,4 кВ",
     project_catalog_1: "Городище.<br />Встановлення вежі звʼязку",
     project_catalog_2: "СЕС «Еко-Поле»",
     project_catalog_3: "Водогін для ТРЦ<br />«Магніт»",
@@ -110,6 +115,7 @@ const translations = {
     svitoch_case_voltage: "35 кВ",
     svitoch_case_description: "Повна заміна комутаційного обладнання, впровадження систем телемеханіки та АСКОЕ, підвищення надійності енергопостачання для промислового кластера.",
     svitoch_case_results: "Результати",
+    service_intro: "Ми забезпечуємо повний спектр інженерно-будівельних послуг, необхідних для створення та модернізації енергетичних об'єктів та інфраструктури.",
     svitoch_intro: "Ми забезпечуємо повний спектр інженерно-будівельних послуг, необхідних для створення та модернізації енергетичних об'єктів та інфраструктури.",
     svitoch_direction_label: "Напрямок 01:",
     svitoch_direction_value: "Проектування і будівництво мереж електропостачання",
@@ -311,11 +317,11 @@ const translations = {
       "Reliability confirmed by years of stable work by our founders.",
     about_page_power_title: "Modern engineering and construction capacity",
     about_page_power_text_1:
-      "<strong>Today, TEKS ENERGY</strong> is a modern structure operating at the intersection of traditional quality and advanced technologies.",
+      "<strong>Today, TEKS ENERGY</strong> is a modern structure<br />operating at the intersection of traditional quality<br />and advanced technologies.",
     about_page_power_text_2:
-      "We have built a company model capable of delivering a full cycle of work: from design to construction and commissioning.",
+      "We have built a company model capable<br />of delivering a full cycle of work: from design<br />to construction and commissioning.",
     about_page_power_text_3:
-      "We do not just build — we create resilient infrastructure using the most advanced engineering solutions.",
+      "We do not just build — we create resilient<br />infrastructure using the most advanced<br />engineering solutions.",
     about_page_challenges_title: "Readiness for the most complex<br />challenges",
     about_page_challenges_text_1:
       "We entered the market as a strong player ready to take responsibility for the most complex infrastructure challenges.",
@@ -359,6 +365,11 @@ const translations = {
     section_projects: "Completed projects",
     projects_page_title: "Completed projects",
     project_view: "View project",
+    home_project_1_title: "Horodyshche.<br />Installation of a communication tower",
+    home_project_2_title: "Connection of the construction site electrical installations<br />to the electrical networks of<br />PJSC \"Cherkasyoblenergo\"",
+    home_project_3_title: "Standard connection of residential building electrical installations<br />to the electrical networks of<br />PJSC \"Cherkasyoblenergo\"",
+    home_project_4_title: "Connection of a non-residential premises<br />to the electrical networks of PJSC \"Cherkasyoblenergo\"<br />(catering facility)",
+    home_project_5_title: "Reconstruction of the 0.4 kV overhead line<br />from TP-124 feeders L-1 and L-3 with installation of<br />relieving 10/0.4 kV transformer substations",
     project_catalog_1: "Horodyshche.<br />Communication tower installation",
     project_catalog_2: "Eco-Field solar plant",
     project_catalog_3: "Water pipeline for<br />Magnit mall",
@@ -370,6 +381,7 @@ const translations = {
     svitoch_case_voltage: "35 kV",
     svitoch_case_description: "Complete replacement of switching equipment, implementation of telemechanics systems and ASKOE, and improved power supply reliability for the industrial cluster.",
     svitoch_case_results: "Results",
+    service_intro: "We provide a full range of engineering and construction services required for the creation and modernization of energy facilities and infrastructure.",
     svitoch_intro: "We provide a full range of engineering and construction services required for the creation and modernization of energy facilities and infrastructure.",
     svitoch_direction_label: "Direction 01:",
     svitoch_direction_value: "Design and Construction of Power Supply Networks",
@@ -706,7 +718,6 @@ if (projectsPanel && projectsTrack) {
       projectsTrack.appendChild(firstCard);
       projectsTrack.style.transform = "translate3d(0, 0, 0)";
 
-      // Force the browser to apply the reset before re-enabling transitions.
       void projectsTrack.offsetWidth;
 
       projectsTrack.style.transition = "";
@@ -830,7 +841,6 @@ async function renderProjectDetail() {
 
                     images.forEach(imgUrl => {
                         const url = imgUrl.trim();
-                        // Перевірка на валідність посилання
                         if (url && url !== "undefined" && url !== "null") {
                             const itemDiv = document.createElement('div');
                             itemDiv.className = 'project-showcase__gallery-item';
@@ -857,6 +867,7 @@ async function renderProjectDetail() {
         if (titleEl) titleEl.innerText = "Помилка завантаження";
     }
 }
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchProjects();
     renderProjectDetail();
@@ -894,3 +905,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+async function loadProjectDetails() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (!id) return;
+
+    try {
+        const response = await fetch(`${API_URL}/content/${id}`);
+        const data = await response.json();
+        
+        console.log("Дані з бази (поле short_description):", data.short_description);
+
+        const shortDescEl = document.getElementById('target-short-desc');
+        
+        if (shortDescEl) {
+            shortDescEl.textContent = (data.short_description && data.short_description.trim() !== "") 
+                ? data.short_description 
+                : "Реалізовано"; 
+        } else {
+            console.error("Помилка: Не знайдено елемент з id='target-short-desc'");
+        }
+        const titleEl = document.getElementById('detail-title');
+        if (titleEl) titleEl.textContent = data.title;
+
+    } catch (err) {
+        console.error("Помилка завантаження:", err);
+    }
+}
+
+window.addEventListener('DOMContentLoaded', loadProjectDetails);

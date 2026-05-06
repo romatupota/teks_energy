@@ -1,21 +1,21 @@
 import os
 import cloudinary
 import cloudinary.uploader
-from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
+from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import datetime
 import pytz
-from typing import List
+from typing import List, Optional
 
 from . import models, schemas, auth, database, crud
 
 cloudinary.config( 
-  cloud_name = "dohdugb5p", 
-  api_key = "727274989311534", 
-  api_secret = "czltXbr4R1LePYesKmwQzL7CuPw" 
+    cloud_name = "dohdugb5p", 
+    api_key = "727274989311534", 
+    api_secret = "czltXbr4R1LePYesKmwQzL7CuPw" 
 )
 
 models.Base.metadata.create_all(bind=database.engine)
@@ -27,11 +27,14 @@ app.add_middleware(
     allow_origins=[
         "https://teks-energy-admin-panel.onrender.com",
         "https://teks-energy-content-site.onrender.com",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 UPLOAD_DIR = "static/uploads"
 if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
@@ -53,14 +56,33 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 def get_all_content(db: Session = Depends(database.get_db)):
     return crud.get_all_content(db)
 
+@app.get("/content/{content_id}", response_model=schemas.ContentOut)
+def get_single_project(content_id: int, db: Session = Depends(database.get_db)):
+    db_content = db.query(models.Content).filter(models.Content.id == content_id).first()
+    if not db_content:
+        raise HTTPException(status_code=404, detail="Проєкт не знайдено")
+    return db_content
+
 @app.post("/content", response_model=schemas.ContentOut)
 def create_project(
-    content: schemas.ContentCreate,
+    title: str = Form(...),
+    body: str = Form(...),
+    short_description: str = Form(None),
+    image_url: str = Form(None),
+    additional_images: str = Form(""),
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(auth.get_current_user)
 ):
-    return crud.create_content(db=db, content=content, owner_id=current_user.id)
+    project_data = schemas.ContentCreate(
+        title=title,
+        body=body,
+        short_description=short_description,
+        image_url=image_url,
+        additional_images=additional_images
+    )
+    return crud.create_content(db=db, content=project_data, owner_id=current_user.id)
 
+# 4. Оновити проєкт
 @app.patch("/content/{content_id}", response_model=schemas.ContentOut)
 def update_project(
     content_id: int,
@@ -103,6 +125,7 @@ async def upload_multiple_files(files: List[UploadFile] = File(...)):
             continue
     return urls
 
+
 @app.post("/applications", response_model=schemas.ApplicationOut)
 def send_application(app_data: schemas.ApplicationCreate, db: Session = Depends(database.get_db)):
     return crud.create_application(db=db, app_data=app_data)
@@ -113,6 +136,28 @@ def read_applications(
     current_user: models.User = Depends(auth.get_current_user)
 ):
     return crud.get_applications(db)
+
+@app.delete("/applications/{app_id}")
+def delete_application(
+    app_id: int, 
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    success = crud.delete_application(db, app_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Заявку не знайдено")
+    return {"detail": "Заявку видалено"}
+
+@app.delete("/applications/{app_id}")
+def delete_application(
+    app_id: int, 
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    success = crud.delete_application(db, app_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Заявку не знайдено")
+    return {"detail": "Заявку видалено успішно"}
 
 if __name__ == "__main__":
     import uvicorn

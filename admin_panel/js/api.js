@@ -143,25 +143,22 @@ async function deleteAdmin() {
 }
 
 async function saveProjectWithFile() {
-    
     const token = localStorage.getItem('access_token');
 
     const titleEl = document.getElementById('content-title');
     const bodyEl = document.getElementById('content-body');
+    const shortDescEl = document.getElementById('content-short-description'); 
     const fileInput = document.getElementById('content-file');
 
     if (!token) {
-        showNotification("Ви не авторизовані! Увійдіть в систему знову.", "error");
+        showNotification("Ви не авторизовані!", "error");
         return;
     }
 
     if (!titleEl || !bodyEl || !fileInput) {
-        console.error("Помилка: Один з елементів (title, body або file) не знайдено в HTML!");
+        console.error("Елементи форми не знайдено!");
         return;
     }
-
-    const titleVal = titleEl.value;
-    const bodyVal = bodyEl.value;
 
     if (fileInput.files.length === 0) {
         showNotification("Виберіть хоча б одне фото", "error");
@@ -169,42 +166,37 @@ async function saveProjectWithFile() {
     }
 
     try {
-        showNotification("Завантаження фото на сервер...");
+        showNotification("Завантаження фото...");
 
-        const formData = new FormData();
+        const uploadFormData = new FormData();
         for (let i = 0; i < fileInput.files.length; i++) {
-            formData.append("files", fileInput.files[i]);
+            uploadFormData.append("files", fileInput.files[i]);
         }
 
         const uploadRes = await fetch(`${API_URL}/upload-multiple`, {
             method: "POST",
             headers: { 'Authorization': `Bearer ${token}` },
-            body: formData
+            body: uploadFormData
         });
 
-        if (!uploadRes.ok) {
-            const errData = await uploadRes.json();
-            throw new Error(errData.detail || "Помилка завантаження файлів");
-        }
+        if (!uploadRes.ok) throw new Error("Помилка завантаження фото");
         
         const urls = await uploadRes.json(); 
+        const finalFormData = new FormData();
+        finalFormData.append('title', titleEl.value);
+        finalFormData.append('body', bodyEl.value);
+        finalFormData.append('short_description', shortDescEl ? shortDescEl.value : "");
+        finalFormData.append('image_url', urls[0]);
+        finalFormData.append('additional_images', urls.slice(1).join(','));
 
-        const projectData = {
-            title: titleVal,
-            body: bodyVal,
-            image_url: urls[0], 
-            additional_images: urls.slice(1).join(',')
-        };
-
-        console.log("Відправка в БД:", projectData);
+        console.log("Відправка в БД (FormData заповнено)");
 
         const response = await fetch(`${API_URL}/content`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(projectData)
+            body: finalFormData
         });
 
         if (response.ok) {
@@ -212,13 +204,38 @@ async function saveProjectWithFile() {
             setTimeout(() => location.reload(), 1500);
         } else {
             const error = await response.json();
-            showNotification("Помилка БД: " + (error.detail || "невідома"), "error");
+            console.log("Помилка 422 дебаг:", error);
+            showNotification("Помилка БД: " + (error.detail || "422"), "error");
         }
     } catch (e) {
         console.error("Критична помилка:", e);
         showNotification("Сталася помилка: " + e.message, "error");
     }
 }
+
+async function deleteApplication(appId) {
+    if (!confirm("Ви впевнені, що хочете видалити цю заявку?")) return;
+
+    const token = localStorage.getItem('access_token');
+    try {
+        const response = await fetch(`${API_URL}/applications/${appId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            alert("Заявку видалено");
+            location.reload();
+        } else {
+            alert("Помилка при видаленні");
+        }
+    } catch (error) {
+        console.error("Помилка:", error);
+    }
+}
+
 async function addContentWithUrl(imageUrl) {
     const title = document.getElementById('content-title').value;
     const body = document.getElementById('content-body').value;
@@ -319,7 +336,6 @@ async function updateContent(id) {
     const body = document.getElementById(`body-${id}`).value;
     const token = localStorage.getItem('access_token');
     const imageUrl = document.getElementById(`img-${id}`).value;
-    // Додайте image_url у body запиту fetch
     body: JSON.stringify({ title, body, image_url: imageUrl })
 
     try {
@@ -425,11 +441,17 @@ function previewEditFiles(id) {
 }
 
 async function updateContentWithFiles(id) {
-    // Отримуємо елементи
+    const formData = new FormData();
     const titleInput = document.getElementById(`edit-title-${id}`);
     const bodyInput = document.getElementById(`edit-body-${id}`);
     const fileInput = document.getElementById(`edit-file-${id}`);
     const token = localStorage.getItem('access_token');
+    const shortDescValue = document.getElementById(`edit-short-desc-${id}`).value;
+    
+    formData.append('title', document.getElementById(`edit-title-${id}`).value);
+    formData.append('body', document.getElementById(`edit-body-${id}`).value);
+
+    formData.append('short_description', shortDescValue);
 
     if (!titleInput || !bodyInput) {
         console.error(`Помилка: Не знайдено поля для ID ${id}. Перевірте назви ID в HTML.`);
@@ -494,32 +516,37 @@ async function updateContentWithFiles(id) {
 
 async function loadApplications() {
     const token = localStorage.getItem('access_token');
-    if (!token) return;
+    const response = await fetch(`${API_URL}/applications`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const apps = await response.json();
+    
+    const tbody = document.getElementById('apps-tbody');
+    tbody.innerHTML = '';
 
-    try {
-        const response = await fetch(`${API_URL}/applications`, {
-            headers: { 'Authorization': `Bearer ${token}` }
+    apps.forEach(app => {
+        const row = document.createElement('tr');
+        const date = new Date(app.created_at).toLocaleString('uk-UA', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
         });
 
-        if (response.ok) {
-            const apps = await response.json();
-            const tbody = document.getElementById('apps-tbody');
-            
-            tbody.innerHTML = apps.map(app => {
-                const date = new Date(app.created_at).toLocaleString('uk-UA');
-                return `
-                    <tr>
-                        <td>${date}</td>
-                        <td>${app.user_name}</td>
-                        <td><a href="tel:${app.user_phone}" style="color: #007bff;">${app.user_phone}</a></td>
-                        <td>${app.service_type}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-    } catch (e) {
-        console.error("Не вдалося завантажити заявки", e);
-    }
+        row.innerHTML = `
+            <td>${date}</td>
+            <td>${app.user_name}</td>
+            <td><a href="tel:${app.user_phone}" style="color: #007bff;">${app.user_phone}</a></td>
+            <td>${app.service_type}</td>
+            <td>
+                <button onclick="deleteApplication(${app.id})" class="delete-btn">
+                    🗑 Видалити
+                </button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
