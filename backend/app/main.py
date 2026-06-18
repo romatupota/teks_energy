@@ -25,8 +25,9 @@ app = FastAPI(title="TeksEnergy API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://teks.energy/"
+        "https://teks-energy-admin-panel.onrender.com"
         "*"
-        "https://teks.energy/projects.html?"
     ],
     allow_credentials=True,
     allow_methods=["*"],
