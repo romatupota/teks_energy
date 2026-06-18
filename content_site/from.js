@@ -856,6 +856,8 @@ async function renderProjectDetail() {
                     console.log("Додаткові зображення для цього проєкту відсутні.");
                 }
             }
+            
+            await loadProjectFeatures(projectId);
         } else {
             titleEl.innerText = "Проєкт не знайдено";
         }
@@ -894,16 +896,22 @@ async function loadProjectDetails() {
     }
 }
 
-async function loadProjectFeatures() {
+async function loadProjectFeatures(projectId) {
+    if (!projectId) {
+        const params = new URLSearchParams(window.location.search);
+        projectId = params.get('id');
+    }
+    if (!projectId) return;
+
     try {
-        const response = await fetch(`${API_URL}/api/content/items`);
+        const response = await fetch(`${API_URL}/api/content/items/${projectId}`);
         if (!response.ok) {
             console.error("Не вдалося завантажити пункти");
             return;
         }
 
         const items = await response.json();
-        const container = document.querySelector('.project-detail__features');
+        const container = document.querySelector('.project-detail__features') || document.getElementById('detail-features-list');
         if (!container) return;
 
         const colorClasses = [
@@ -916,13 +924,15 @@ async function loadProjectFeatures() {
         ];
 
         container.innerHTML = items.map((item, index) => {
+            if (!item.title || item.title.trim() === "") return "";
+            
             const num = String(index + 1).padStart(2, '0');
             const colorClass = colorClasses[index] || 'detail-feature--light';
 
             return `
                 <article class="detail-feature ${colorClass}">
                     <span class="detail-feature__num">${num}</span>
-                    <p><b>${item.title}</b><br>${item.description}</p>
+                    <p><b>${item.title}</b><br>${item.description || ''}</p>
                 </article>
             `;
         }).join('');
