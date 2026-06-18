@@ -26,6 +26,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "*"
+        "https://teks.energy/projects.html?"
     ],
     allow_credentials=True,
     allow_methods=["*"],
