@@ -39,12 +39,10 @@ async function login() {
         const data = await response.json();
 
         if (response.ok) {
-            
             localStorage.setItem('access_token', data.access_token);
             showNotification("Успішний вхід!", "success");
             location.reload();
         } else {
-            
             console.error("Login error details:", data);
             document.getElementById('login-error').innerText = data.detail || "Помилка входу";
             showNotification(data.detail || "Помилка входу", "error");
@@ -255,6 +253,7 @@ async function addContentWithUrl(imageUrl) {
         location.reload();
     }
 }
+
 async function loadContentList() {
     try {
         const response = await fetch(`${API_URL}/content`);
@@ -336,7 +335,6 @@ async function updateContent(id) {
     const body = document.getElementById(`body-${id}`).value;
     const token = localStorage.getItem('access_token');
     const imageUrl = document.getElementById(`img-${id}`).value;
-    body: JSON.stringify({ title, body, image_url: imageUrl })
 
     try {
         const response = await fetch(`${API_URL}/content/${id}`, {
@@ -345,7 +343,7 @@ async function updateContent(id) {
                 'Content-Type': 'application/json', 
                 'Authorization': `Bearer ${token}` 
             },
-            body: JSON.stringify({ title, body })
+            body: JSON.stringify({ title, body, image_url: imageUrl })
         });
 
         if (response.ok) {
@@ -357,30 +355,14 @@ async function updateContent(id) {
     } catch (e) { showNotification("Помилка з'єднання", "error"); }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('access_token')) {
-        const loginSec = document.getElementById('login-section');
-        const adminSec = document.getElementById('admin-section');
-        
-        if (loginSec) loginSec.style.display = 'none';
-        if (adminSec) adminSec.style.display = 'block';
-        
-        loadContentList();
-    }
-});
-
 function filterProjects() {
     const searchValue = document.getElementById('admin-search').value.toLowerCase();
-    
     const cards = document.querySelectorAll('.edit-card');
 
     cards.forEach(card => {
-
         const titleInput = card.querySelector('input[id^="edit-title-"]');
-        
         if (titleInput) {
             const titleText = titleInput.value.toLowerCase();
-            
             if (titleText.includes(searchValue)) {
                 card.style.display = "block";
             } else {
@@ -389,8 +371,8 @@ function filterProjects() {
         }
     });
 }
-function initDragAndDropForEdit(id) {
 
+function initDragAndDropForEdit(id) {
     const zone = document.getElementById(`drop-zone-${id}`);
     const input = document.getElementById(`edit-file-${id}`);
 
@@ -441,17 +423,11 @@ function previewEditFiles(id) {
 }
 
 async function updateContentWithFiles(id) {
-    const formData = new FormData();
     const titleInput = document.getElementById(`edit-title-${id}`);
     const bodyInput = document.getElementById(`edit-body-${id}`);
     const fileInput = document.getElementById(`edit-file-${id}`);
     const token = localStorage.getItem('access_token');
     const shortDescValue = document.getElementById(`short-desc-${id}`).value;
-    
-    formData.append('title', document.getElementById(`edit-title-${id}`).value);
-    formData.append('body', document.getElementById(`edit-body-${id}`).value);
-
-    formData.append('short_description', shortDescValue);
 
     if (!titleInput || !bodyInput) {
         console.error(`Помилка: Не знайдено поля для ID ${id}. Перевірте назви ID в HTML.`);
@@ -484,7 +460,8 @@ async function updateContentWithFiles(id) {
 
         const updateData = {
             title: titleInput.value,
-            body: bodyInput.value
+            body: bodyInput.value,
+            short_description: shortDescValue
         };
 
         if (imageUrl) {
@@ -522,6 +499,7 @@ async function loadApplications() {
     const apps = await response.json();
     
     const tbody = document.getElementById('apps-tbody');
+    if (!tbody) return;
     tbody.innerHTML = '';
 
     apps.forEach(app => {
@@ -549,9 +527,78 @@ async function loadApplications() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+async function saveAdminItems() {
+    const token = localStorage.getItem('access_token');
+    const items = [];
+    
+    for (let i = 1; i <= 6; i++) {
+        const titleEl = document.getElementById(`item-title-${i}`);
+        const descEl = document.getElementById(`item-desc-${i}`);
+        
+        if (titleEl && descEl && titleEl.value.trim() !== "") {
+            items.push({
+                title: titleEl.value.trim(),
+                description: descEl.value.trim()
+            });
+        }
+    }
+
+    if (items.length === 0) {
+        showNotification("Будь ласка, заповніть хоча б один пункт (від 1 до 6)", "error");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/api/admin/items`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ items: items })
+        });
+
+        if (response.ok) {
+            showNotification("Пункти успішно збережено на сайті!");
+        } else {
+            const err = await response.json();
+            showNotification("Помилка збереження: " + (err.detail || "від 1 до 6 пунктів"), "error");
+        }
+    } catch (e) {
+        showNotification("Помилка з'єднання з сервером", "error");
+    }
+}
+
+async function loadAdminItems() {
+    try {
+        const response = await fetch(`${API_URL}/api/content/items`);
+        if (response.ok) {
+            const data = await response.json();
+            data.forEach((item, index) => {
+                const titleEl = document.getElementById(`item-title-${index + 1}`);
+                const descEl = document.getElementById(`item-desc-${index + 1}`);
+                if (titleEl && descEl) {
+                    titleEl.value = item.title;
+                    descEl.value = item.description;
+                }
+            });
+        }
+    } catch (e) {
+        console.error("Не вдалося завантажити пункти структури", e);
+    }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('access_token')) {
+        const loginSec = document.getElementById('login-section');
+        const adminSec = document.getElementById('admin-section');
+        
+        if (loginSec) loginSec.style.display = 'none';
+        if (adminSec) adminSec.style.display = 'block';
+        
+        loadContentList();
         loadApplications();
+        loadAdminItems();
         setInterval(loadApplications, 300000);
     }
 });

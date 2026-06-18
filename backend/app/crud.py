@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 import pytz
 
 offset = timezone(timedelta(hours=3))
+kyiv_tz = pytz.timezone('Europe/Kyiv')
 
 def get_user_by_username(db: Session, username: str):
     return db.query(models.User).filter(models.User.username == username).first()
@@ -58,12 +59,16 @@ def update_content(db: Session, content_id: int, content_update: schemas.Content
         db.refresh(db_content)
     return db_content
 
-kyiv_tz = pytz.timezone('Europe/Kyiv')
+def delete_content(db: Session, content_id: int):
+    db_content = db.query(models.Content).filter(models.Content.id == content_id).first()
+    if db_content:
+        db.delete(db_content)
+        db.commit()
+        return True
+    return False
 
 def create_application(db: Session, app_data: schemas.ApplicationCreate):
-    
     current_time = datetime.now(kyiv_tz) 
-    
     db_application = models.Application(
         **app_data.dict(),
         created_at=current_time
@@ -73,6 +78,9 @@ def create_application(db: Session, app_data: schemas.ApplicationCreate):
     db.refresh(db_application)
     return db_application
 
+def get_applications(db: Session):
+    return db.query(models.Application).order_by(models.Application.created_at.desc()).all()
+
 def delete_application(db: Session, app_id: int):
     db_app = db.query(models.Application).filter(models.Application.id == app_id).first()
     if db_app:
@@ -81,13 +89,13 @@ def delete_application(db: Session, app_id: int):
         return True
     return False
 
-def delete_content(db: Session, content_id: int):
-    db_content = db.query(models.Content).filter(models.Content.id == content_id).first()
-    if db_content:
-        db.delete(db_content)
-        db.commit()
-        return True
-    return False
+def get_all_items(db: Session):
+    return db.query(models.Item).all()
 
-def get_applications(db: Session):
-    return db.query(models.Application).order_by(models.Application.created_at.desc()).all()
+def replace_items(db: Session, items_data: list[schemas.ItemSchema]):
+    db.query(models.Item).delete()
+    for item in items_data:
+        db_item = models.Item(title=item.title, description=item.description)
+        db.add(db_item)
+    db.commit()
+    return True

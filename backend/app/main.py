@@ -123,7 +123,6 @@ async def upload_multiple_files(files: List[UploadFile] = File(...)):
             continue
     return urls
 
-
 @app.post("/applications", response_model=schemas.ApplicationOut)
 def send_application(app_data: schemas.ApplicationCreate, db: Session = Depends(database.get_db)):
     return crud.create_application(db=db, app_data=app_data)
@@ -145,6 +144,26 @@ def delete_application(
     if not success:
         raise HTTPException(status_code=404, detail="Заявку не знайдено")
     return {"detail": "Заявку видалено успішно"}
+
+@app.post("/api/admin/items", status_code=status.HTTP_201_CREATED)
+async def save_admin_items(payload: schemas.ItemsPayload, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+    try:
+        db.query(models.Item).delete()
+        for item_data in payload.items:
+            db_item = models.Item(title=item_data.title, description=item_data.description)
+            db.add(db_item)
+        db.commit()
+        return {"status": "success", "message": f"Успішно збережено {len(payload.items)} пунктів."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/content/items", response_model=List[schemas.ItemSchema])
+async def get_content_items(db: Session = Depends(database.get_db)):
+    try:
+        return db.query(models.Item).all()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn

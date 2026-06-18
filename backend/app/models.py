@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
-from .database import Base
 from datetime import datetime, timedelta, timezone
+from .database import Base
 
 offset = timezone(timedelta(hours=3))
 
@@ -14,6 +14,7 @@ class User(Base):
 
 class Content(Base):
     __tablename__ = "content"
+    
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     short_description = Column(String(255), nullable=True)
@@ -31,3 +32,9 @@ class Application(Base):
     service_type = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+class Item(Base):
+    __tablename__ = "items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False)
+    description = Column(String, nullable=False)

@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from typing import Optional
+from pydantic import BaseModel, Field
+from typing import Optional, List
 from datetime import datetime
 
 class UserBase(BaseModel):
@@ -11,6 +11,7 @@ class UserCreate(UserBase):
 class UserOut(UserBase):
     id: int
     is_superuser: bool
+    
     class Config:
         from_attributes = True
 
@@ -38,13 +39,9 @@ class ContentUpdate(BaseModel):
 class ContentOut(ContentBase):
     id: int
     owner_id: int
+    
     class Config:
         from_attributes = True
-
-class ItemUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    price: Optional[float] = None
 
 class ApplicationCreate(BaseModel):
     user_name: str
@@ -57,3 +54,13 @@ class ApplicationOut(ApplicationCreate):
 
     class Config:
         from_attributes = True
+
+class ItemSchema(BaseModel):
+    title: str
+    description: str
+
+    class Config:
+        from_attributes = True
+
+class ItemsPayload(BaseModel):
+    items: List[ItemSchema] = Field(..., min_items=1, max_items=6)
