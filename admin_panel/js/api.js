@@ -266,41 +266,80 @@ async function loadContentList() {
                 return;
             }
 
-            container.innerHTML = data.map((item, index) => `
-                <div class="edit-card" id="card-${item.id}">
-                    <div class="edit-card-header">
-                        <span class="project-number">Проєкт №${index + 1}</span>
-                        <span class="project-id">ID: ${item.id}</span>
-                    </div>
-                    
-                    <div class="edit-fields">
-                        <input type="text" id="edit-title-${item.id}" value="${item.title}" placeholder="Назва">
-                        <input type="text" id="short-desc-${item.id}" value="${item.short_description || ''}" placeholder="Короткий опис для картки">
-                        <textarea id="edit-body-${item.id}" rows="3">${item.body}</textarea>
-                    </div>
+            container.innerHTML = data.map((item, index) => {
+                // Генеруємо індивідуальні інпути для 6 пунктів усередині кожної картки
+                let projectFeaturesHtml = `<div class="project-features-edit-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin: 15px 0; background:#1e1e1e; padding:12px; border-radius:6px; border:1px solid #333;">`;
+                for (let i = 1; i <= 6; i++) {
+                    projectFeaturesHtml += `
+                        <div style="border: 1px solid #444; padding: 8px; border-radius: 4px; background:#252525;">
+                            <span style="font-size:0.75em; color:#aaa; font-weight:bold;">Етап 0${i}</span>
+                            <input type="text" id="item-title-${item.id}-${i}" placeholder="Заголовок ${i}" style="width:100%; margin:4px 0; padding:4px; background:#111; color:#fff; border:1px solid #444;">
+                            <textarea id="item-desc-${item.id}-${i}" placeholder="Опис ${i}" rows="2" style="width:100%; padding:4px; background:#111; color:#fff; border:1px solid #444; resize:vertical; font-size:0.9em;"></textarea>
+                        </div>
+                    `;
+                }
+                projectFeaturesHtml += `</div>`;
 
-                    <div class="folder-drop-zone" id="drop-zone-${item.id}" onclick="document.getElementById('edit-file-${item.id}').click()">
-                        <p class="folder-text">Перетягніть нові фото сюди або клікніть, щоб змінити</p>
-                        <input type="file" id="edit-file-${item.id}" multiple style="display:none" onchange="previewEditFiles(${item.id})">
+                return `
+                    <div class="edit-card" id="card-${item.id}">
+                        <div class="edit-card-header">
+                            <span class="project-number">Проєкт №${index + 1}</span>
+                            <span class="project-id">ID: ${item.id}</span>
+                        </div>
                         
-                        <div id="preview-${item.id}" class="edit-preview-grid">
-                            <img src="${item.image_url}" class="preview-item">
+                        <div class="edit-fields">
+                            <input type="text" id="edit-title-${item.id}" value="${item.title}" placeholder="Назва">
+                            <input type="text" id="short-desc-${item.id}" value="${item.short_description || ''}" placeholder="Короткий опис для картки">
+                            <textarea id="edit-body-${item.id}" rows="3">${item.body}</textarea>
+                        </div>
+
+                        <h4 style="margin-top:15px; color:#ccc;">📋 Етапи реалізації (6 пунктів) індивідуально для цього проєкту:</h4>
+                        ${projectFeaturesHtml}
+
+                        <div class="folder-drop-zone" id="drop-zone-${item.id}" onclick="document.getElementById('edit-file-${item.id}').click()">
+                            <p class="folder-text">Перетягніть нові фото сюди або клікніть, щоб змінити</p>
+                            <input type="file" id="edit-file-${item.id}" multiple style="display:none" onchange="previewEditFiles(${item.id})">
+                            
+                            <div id="preview-${item.id}" class="edit-preview-grid">
+                                <img src="${item.image_url}" class="preview-item">
+                            </div>
+                        </div>
+
+                        <div class="edit-actions" style="display: flex; gap: 10px;">
+                            <button class="btn-save" onclick="updateContentWithFiles(${item.id})">Зберегти зміни</button>
+                            <button class="btn-delete" onclick="deleteContent(${item.id})" style="background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer;">Видалити</button>
                         </div>
                     </div>
-
-                    <div class="edit-actions" style="display: flex; gap: 10px;">
-                        <button class="btn-save" onclick="updateContentWithFiles(${item.id})">Зберегти зміни</button>
-                        <button class="btn-delete" onclick="deleteContent(${item.id})" style="background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer;">Видалити</button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             data.forEach(item => {
                 initDragAndDropForEdit(item.id);
+                loadProjectFeaturesToSpecificInputs(item.id); // Підвантажуємо індивідуальні пункти для кожної картки
             });
         }
     } catch (e) { 
         console.log("Помилка завантаження контенту", e); 
+    }
+}
+
+// Нова допоміжна функція для завантаження пунктів у картку конкретного проєкту
+async function loadProjectFeaturesToSpecificInputs(projectId) {
+    try {
+        const response = await fetch(`${API_URL}/api/content/items/${projectId}`);
+        if (response.ok) {
+            const features = await response.json();
+            features.forEach((feat, index) => {
+                const titleEl = document.getElementById(`item-title-${projectId}-${index + 1}`);
+                const descEl = document.getElementById(`item-desc-${projectId}-${index + 1}`);
+                if (titleEl && descEl) {
+                    titleEl.value = feat.title || "";
+                    descEl.value = feat.description || "";
+                }
+            });
+        }
+    } catch (e) {
+        console.error(`Не вдалося завантажити індивідуальні пункти для ID ${projectId}`, e);
     }
 }
 
@@ -439,6 +478,31 @@ async function updateContentWithFiles(id) {
     let additionalImages = null;
 
     try {
+        // [ДОДАТКОВО]: Зберігаємо унікальні 6 пунктів структури саме для цього проєкту
+        const specificItems = [];
+        for (let i = 1; i <= 6; i++) {
+            const tEl = document.getElementById(`item-title-${id}-${i}`);
+            const dEl = document.getElementById(`item-desc-${id}-${i}`);
+            if (tEl && dEl && tEl.value.trim() !== "") {
+                specificItems.push({
+                    title: tEl.value.trim(),
+                    description: dEl.value.trim()
+                });
+            }
+        }
+
+        if (specificItems.length > 0) {
+            await fetch(`${API_URL}/api/admin/items/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ items: specificItems })
+            });
+        }
+
+        // Завантаження файлів
         if (fileInput && fileInput.files.length > 0) {
             const formData = new FormData();
             for (let i = 0; i < fileInput.files.length; i++) {
