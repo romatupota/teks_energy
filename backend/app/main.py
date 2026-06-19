@@ -171,9 +171,9 @@ def delete_application(
     return {"detail": "Заявку видалено успішно"}
 
 @app.post("/api/content/items/{project_id}")
-async def save_project_items(
+async def save_project_items_flexible(
     project_id: int, 
-    payload: schemas.ItemsPayload, 
+    payload: list, 
     db: Session = Depends(database.get_db), 
     current_user: models.User = Depends(auth.get_current_user)
 ):
@@ -182,15 +182,17 @@ async def save_project_items(
         raise HTTPException(status_code=404, detail="Проєкт не знайдено")
     try:
         db.query(models.Item).filter(models.Item.project_id == project_id).delete()
-        for index, item_data in enumerate(payload.items):
-            db_item = models.Item(
-                number=index + 1, 
-                description=item_data.description, 
-                project_id=project_id
-            )
-            db.add(db_item)
+        for index, item_data in enumerate(payload):
+            desc = item_data.get("description", "") if isinstance(item_data, dict) else str(item_data)
+            if desc.strip():
+                db_item = models.Item(
+                    number=index + 1, 
+                    description=desc, 
+                    project_id=project_id
+                )
+                db.add(db_item)
         db.commit()
-        return {"status": "success", "message": f"Збережено пунктів: {len(payload.items)} для проєкту {project_id}"}
+        return {"status": "success", "message": f"Синхронізовано пунктів: {len(payload)} для проєкту {project_id}"}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
@@ -199,7 +201,7 @@ async def save_project_items(
 async def get_project_items(project_id: int, db: Session = Depends(database.get_db)):
     project = db.query(models.Content).filter(models.Content.id == project_id).first()
     if not project:
-        raise HTTPException(status_code=404, detail="Проєкт не знайдено")
+        return []
     return db.query(models.Item).filter(models.Item.project_id == project_id).order_by(models.Item.number.asc()).all()
 
 if __name__ == "__main__":

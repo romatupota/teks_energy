@@ -33,7 +33,7 @@ class Application(Base):
     user_name = Column(String, nullable=False)
     user_phone = Column(String, nullable=False)
     service_type = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 class Item(Base):
     __tablename__ = "items"

@@ -56,8 +56,15 @@ class ApplicationOut(ApplicationCreate):
         from_attributes = True
 
 class ItemSchema(BaseModel):
-    title: str
+    number: Optional[int] = None
     description: str
+
+    class Config:
+        from_attributes = True
+
+class ItemOut(ItemSchema):
+    id: int
+    project_id: int
 
     class Config:
         from_attributes = True

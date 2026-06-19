@@ -750,7 +750,6 @@
     });
   }
 
-
 const API_URL = "https://teks-energy-api.onrender.com";
 const PLACEHOLDER = "https://placehold.co/600x400?text=No+Image";
 
@@ -905,10 +904,10 @@ async function loadProjectFeatures(projectId) {
 
     try {
         const response = await fetch(`${API_URL}/api/content/items/${projectId}`);
+        const container = document.querySelector('.project-detail__features') || document.getElementById('detail-features-list');
         
         if (response.status === 404) {
             console.log(`Для проєкту з ID ${projectId} пункти структури відсутні.`);
-            const container = document.querySelector('.project-detail__features') || document.getElementById('detail-features-list');
             if (container) container.innerHTML = '';
             return;
         }
@@ -919,7 +918,6 @@ async function loadProjectFeatures(projectId) {
         }
 
         const items = await response.json();
-        const container = document.querySelector('.project-detail__features') || document.getElementById('detail-features-list');
         if (!container) return;
 
         const colorClasses = [
@@ -934,7 +932,8 @@ async function loadProjectFeatures(projectId) {
         container.innerHTML = items.map((item, index) => {
             if (!item.description || item.description.trim() === "") return "";
             
-            const num = String(item.number || (index + 1)).padStart(2, '0');
+            const itemNum = item.number || item.item_number || (index + 1);
+            const num = String(itemNum).padStart(2, '0');
             const colorClass = colorClasses[index] || 'detail-feature--light';
 
             return `

@@ -158,7 +158,7 @@ async function saveProjectWithFile() {
     }
 
     if (fileInput.files.length === 0) {
-        showNotification("Виберіть хоча б одне фото", "error");
+        showNotification("Виберіть хоча б одне photo", "error");
         return;
     }
 
@@ -211,7 +211,7 @@ async function saveProjectWithFile() {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ items: structureItems })
+                    body: JSON.stringify(structureItems)
                 });
             }
 
@@ -335,20 +335,15 @@ async function loadSingleProjectItems(projectId) {
     try {
         const response = await fetch(`${API_URL}/api/content/items/${projectId}`);
         
-        if (response.status === 404) {
-            for (let i = 1; i <= 6; i++) {
-                const inputEl = document.getElementById(`project-item-${projectId}-${i}`);
-                if (inputEl) inputEl.value = ""; 
-            }
-            return;
+        for (let i = 1; i <= 6; i++) {
+            const inputEl = document.getElementById(`project-item-${projectId}-${i}`);
+            if (inputEl) inputEl.value = ""; 
         }
+
+        if (response.status === 404) return;
 
         if (response.ok) {
             const items = await response.json();
-            for (let i = 1; i <= 6; i++) {
-                const inputEl = document.getElementById(`project-item-${projectId}-${i}`);
-                if (inputEl) inputEl.value = "";
-            }
             items.forEach((item, index) => {
                 const inputEl = document.getElementById(`project-item-${projectId}-${index + 1}`);
                 if (inputEl) {
@@ -522,7 +517,7 @@ async function updateContentWithFiles(id) {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ items: updatedItems })
+                body: JSON.stringify(updatedItems)
             });
 
             alert("Проєкт та пункти успішно оновлено!");
