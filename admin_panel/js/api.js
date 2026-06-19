@@ -475,10 +475,19 @@ async function updateContentWithFiles(id) {
             }
         }
 
+        const updatedItems = [];
+        for (let i = 1; i <= 6; i++) {
+            const itemInput = document.getElementById(`project-item-${id}-${i}`);
+            if (itemInput) {
+                updatedItems.push(itemInput.value.trim());
+            }
+        }
+
         const updateData = {
             title: titleInput.value,
             body: bodyInput.value,
-            short_description: shortDescValue
+            short_description: shortDescValue,
+            structure_items: updatedItems
         };
 
         if (imageUrl) {
@@ -496,23 +505,6 @@ async function updateContentWithFiles(id) {
         });
 
         if (response.ok) {
-            const updatedItems = [];
-            for (let i = 1; i <= 6; i++) {
-                const itemInput = document.getElementById(`project-item-${id}-${i}`);
-                if (itemInput && itemInput.value.trim() !== "") {
-                    updatedItems.push({ description: itemInput.value.trim() });
-                }
-            }
-
-            await fetch(`${API_URL}/api/content/items/${id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(updatedItems)
-            });
-
             alert("Проєкт та пункти успішно оновлено!");
             location.reload();
         } else {
