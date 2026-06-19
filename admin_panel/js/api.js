@@ -179,12 +179,24 @@ async function saveProjectWithFile() {
         if (!uploadRes.ok) throw new Error("Помилка завантаження фото");
         
         const urls = await uploadRes.json(); 
+
+        const structureItems = [];
+        for (let i = 1; i <= 6; i++) {
+            const itemInput = document.getElementById(`new-project-item-${i}`);
+            if (itemInput && itemInput.value.trim() !== "") {
+                structureItems.push({ 
+                    description: itemInput.value.trim() 
+                });
+            }
+        }
+
         const finalFormData = new FormData();
         finalFormData.append('title', titleEl.value);
         finalFormData.append('body', bodyEl.value);
         finalFormData.append('short_description', shortDescEl ? shortDescEl.value : "");
         finalFormData.append('image_url', urls[0]);
         finalFormData.append('additional_images', urls.slice(1).join(','));
+        finalFormData.append('structure_items', JSON.stringify(structureItems));
 
         const response = await fetch(`${API_URL}/content`, {
             method: 'POST',
@@ -193,31 +205,6 @@ async function saveProjectWithFile() {
         });
 
         if (response.ok) {
-            const project = await response.json();
-            const projectId = project.id;
-
-            const structureItems = [];
-            for (let i = 1; i <= 6; i++) {
-                const itemInput = document.getElementById(`new-project-item-${i}`);
-                if (itemInput && itemInput.value.trim() !== "") {
-                    structureItems.push({ 
-                        number: i,
-                        description: itemInput.value.trim() 
-                    });
-                }
-            }
-
-            if (structureItems.length > 0) {
-                await fetch(`${API_URL}/api/content/items/${projectId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ items: structureItems })
-                });
-            }
-
             showNotification("🚀 Проєкт опубліковано!");
             setTimeout(() => location.reload(), 1500);
         } else {

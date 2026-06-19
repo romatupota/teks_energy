@@ -750,6 +750,11 @@
     });
   }
 
+
+
+
+
+
 const API_URL = "https://teks-energy-api.onrender.com";
 const PLACEHOLDER = "https://placehold.co/600x400?text=No+Image";
 
@@ -796,6 +801,8 @@ async function renderProjectDetail() {
     const descEl = document.getElementById('detail-description');
     const mainImg = document.getElementById('detail-main-img');
     const galleryContainer = document.getElementById('detail-gallery');
+    const shortDescEl = document.getElementById('target-short-desc');
+    const featuresContainer = document.querySelector('.project-detail__features') || document.getElementById('detail-features-list');
 
     if (!titleEl) return;
 
@@ -807,152 +814,94 @@ async function renderProjectDetail() {
     }
 
     try {
-        const response = await fetch(`${API_URL}/content`);
+        const response = await fetch(`${API_URL}/content/${projectId}`);
+        if (response.status === 404) {
+            titleEl.innerText = "Проєкт не знайдено";
+            return;
+        }
         if (!response.ok) throw new Error("Не вдалося отримати дані з сервера");
         
-        const projects = await response.json();
-        const project = projects.find(p => p.id == projectId);
+        const project = await response.json();
+        console.log("Проєкт успішно завантажено з бази:", project);
 
-        if (project) {
-            console.log("Проєкт знайдено:", project);
+        titleEl.innerHTML = project.title;
+        if (descEl) descEl.innerText = project.body;
 
-            titleEl.innerHTML = project.title;
-            if (descEl) descEl.innerText = project.body;
-
-            if (mainImg) {
-                mainImg.src = project.image_url || PLACEHOLDER;
-                mainImg.onerror = () => { mainImg.src = PLACEHOLDER; };
-            }
-
-            if (galleryContainer) {
-                const mainItem = galleryContainer.querySelector('.project-showcase__gallery-item--main');
-                galleryContainer.innerHTML = '';
-
-                if (mainItem) {
-                    galleryContainer.appendChild(mainItem);
-                }
-
-                if (project.additional_images && project.additional_images.trim().length > 0) {
-                    const images = project.additional_images.split(',');
-
-                    images.forEach(imgUrl => {
-                        const url = imgUrl.trim();
-                        if (url && url !== "undefined" && url !== "null") {
-                            const itemDiv = document.createElement('div');
-                            itemDiv.className = 'project-showcase__gallery-item';
-                            
-                            const img = document.createElement('img');
-                            img.src = url;
-                            img.alt = "Додаткове foto об'єкта";
-                            img.loading = "lazy";
-                            img.onerror = () => itemDiv.remove();
-
-                            itemDiv.appendChild(img);
-                            galleryContainer.appendChild(itemDiv);
-                        }
-                    });
-                } else {
-                    console.log("Додаткові зображення для цього проєкту відсутні.");
-                }
-            }
-            
-            await loadProjectFeatures(projectId);
-        } else {
-            titleEl.innerText = "Проєкт не знайдено";
+        if (shortDescEl) {
+            shortDescEl.textContent = (project.short_description && project.short_description.trim() !== "") 
+                ? project.short_description 
+                : "Реалізовано"; 
         }
+
+        if (mainImg) {
+            mainImg.src = project.image_url || PLACEHOLDER;
+            mainImg.onerror = () => { mainImg.src = PLACEHOLDER; };
+        }
+
+        if (galleryContainer) {
+            const mainItem = galleryContainer.querySelector('.project-showcase__gallery-item--main');
+            galleryContainer.innerHTML = '';
+
+            if (mainItem) {
+                galleryContainer.appendChild(mainItem);
+            }
+
+            if (project.additional_images && project.additional_images.trim().length > 0) {
+                const images = project.additional_images.split(',');
+
+                images.forEach(imgUrl => {
+                    const url = imgUrl.trim();
+                    if (url && url !== "undefined" && url !== "null") {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'project-showcase__gallery-item';
+                        
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.alt = "Додаткове foto об'єкта";
+                        img.loading = "lazy";
+                        img.onerror = () => itemDiv.remove();
+
+                        itemDiv.appendChild(img);
+                        galleryContainer.appendChild(itemDiv);
+                    }
+                });
+            }
+        }
+
+        if (featuresContainer) {
+            featuresContainer.innerHTML = '';
+            
+            if (project.structure_items && project.structure_items.length > 0) {
+                const colorClasses = [
+                    'detail-feature--light',
+                    'detail-feature--dark',
+                    'detail-feature--dark-blue',
+                    'detail-feature--light',
+                    'detail-feature--light',
+                    'detail-feature--dark'
+                ];
+
+                featuresContainer.innerHTML = project.structure_items.map((itemText, index) => {
+                    if (!itemText || itemText.trim() === "") return "";
+                    
+                    const num = String(index + 1).padStart(2, '0');
+                    const colorClass = colorClasses[index] || 'detail-feature--light';
+
+                    return `
+                        <article class="detail-feature ${colorClass}">
+                            <span class="detail-feature__num">${num}</span>
+                            <p>${itemText}</p>
+                        </article>
+                    `;
+                }).join('');
+            } else {
+                console.log(`Для проєкту з ID ${projectId} пункти структури відсутні.`);
+            }
+        }
+
     } catch (error) {
         console.error("Помилка під час рендеру деталей проєкту:", error);
-        if (titleEl) titleEl.innerText = "Помилка завантаження";
-    }
-}
-
-async function loadProjectDetails() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    if (!id) return;
-
-    try {
-        const response = await fetch(`${API_URL}/content/${id}`);
-        const data = await response.json();
-        
-        console.log("Дані з бази (поле short_description):", data.short_description);
-
-        const shortDescEl = document.getElementById('target-short-desc');
-        
-        if (shortDescEl) {
-            shortDescEl.textContent = (data.short_description && data.short_description.trim() !== "") 
-                ? data.short_description 
-                : "Реалізовано"; 
-        } else {
-            console.error("Помилка: Не знайдено елемент з id='target-short-desc'");
-        }
-        
-        const titleEl = document.getElementById('detail-title');
-        if (titleEl) titleEl.textContent = data.title;
-
-    } catch (err) {
-        console.error("Помилка завантаження:", err);
-    }
-}
-
-async function loadProjectFeatures(projectId) {
-    if (!window.location.pathname.includes('project_detail.html')) {
-        return;
-    }
-
-    if (!projectId) {
-        const params = new URLSearchParams(window.location.search);
-        projectId = params.get('id');
-    }
-    if (!projectId) return;
-
-    try {
-        const response = await fetch(`${API_URL}/api/content/items/${projectId}`);
-        const container = document.querySelector('.project-detail__features') || document.getElementById('detail-features-list');
-        
-        if (response.status === 404) {
-            console.log(`Для проєкту з ID ${projectId} пункти структури відсутні.`);
-            if (container) container.innerHTML = '';
-            return;
-        }
-
-        if (!response.ok) {
-            console.error("Не вдалося завантажити пункти структури");
-            return;
-        }
-
-        const items = await response.json();
-        if (!container) {
-            console.error("Контейнер для пунктів (.project-detail__features або #detail-features-list) не знайдено на сторінці project_detail.html");
-            return;
-        }
-
-        const colorClasses = [
-            'detail-feature--light',
-            'detail-feature--dark',
-            'detail-feature--dark-blue',
-            'detail-feature--light',
-            'detail-feature--light',
-            'detail-feature--dark'
-        ];
-
-        container.innerHTML = items.map((item, index) => {
-            if (!item.description || item.description.trim() === "") return "";
-            
-            const itemNum = item.number || item.item_number || (index + 1);
-            const num = String(itemNum).padStart(2, '0');
-            const colorClass = colorClasses[index] || 'detail-feature--light';
-
-            return `
-                <article class="detail-feature ${colorClass}">
-                    <span class="detail-feature__num">${num}</span>
-                    <p>${item.description}</p>
-                </article>
-            `;
-        }).join('');
-
-    } catch (e) {
-        console.error("Помилка з'єднання з сервером при завантаженні пунктів:", e);
+        titleEl.innerText = "Помилка завантаження";
     }
 }
 
@@ -991,7 +940,5 @@ function initApplicationForm() {
 document.addEventListener('DOMContentLoaded', () => {
     fetchProjects();
     renderProjectDetail();
-    loadProjectDetails();
-    loadProjectFeatures();
     initApplicationForm();
 });
