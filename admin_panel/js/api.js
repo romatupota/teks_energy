@@ -270,50 +270,53 @@ async function loadContentList() {
                 return;
             }
 
-            container.innerHTML = data.map((item, index) => `
-                <div class="edit-card" id="card-${item.id}">
-                    <div class="edit-card-header">
-                        <span class="project-number">Проєкт №${index + 1}</span>
-                        <span class="project-id">ID: ${item.id}</span>
-                    </div>
-                    
-                    <div class="edit-fields">
-                        <input type="text" id="edit-title-${item.id}" value="${item.title}" placeholder="Назва">
-                        <input type="text" id="short-desc-${item.id}" value="${item.short_description || ''}" placeholder="Короткий опис для картки">
-                        <textarea id="edit-body-${item.id}" rows="3">${item.body}</textarea>
-                    </div>
+            container.innerHTML = data.map((item, index) => {
+                const itemsArray = item.structure_items || [];
 
-                    <div style="margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
-                        <h4 style="margin-top:0; margin-bottom:10px;">Пункти структури об'єкта</h4>
-                        <div id="project-items-inputs-${item.id}" style="display:flex; flex-direction:column; gap:5px;">
-                            <textarea id="project-item-${item.id}-1" placeholder="Пункт 1" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
-                            <textarea id="project-item-${item.id}-2" placeholder="Пункт 2" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
-                            <textarea id="project-item-${item.id}-3" placeholder="Пункт 3" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
-                            <textarea id="project-item-${item.id}-4" placeholder="Пункт 4" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
-                            <textarea id="project-item-${item.id}-5" placeholder="Пункт 5" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
-                            <textarea id="project-item-${item.id}-6" placeholder="Пункт 6" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
+                return `
+                    <div class="edit-card" id="card-${item.id}">
+                        <div class="edit-card-header">
+                            <span class="project-number">Проєкт №${index + 1}</span>
+                            <span class="project-id">ID: ${item.id}</span>
                         </div>
-                    </div>
-
-                    <div class="folder-drop-zone" id="drop-zone-${item.id}" onclick="document.getElementById('edit-file-${item.id}').click()">
-                        <p class="folder-text">Перетягніть нові photo сюди або клікніть, щоб змінити</p>
-                        <input type="file" id="edit-file-${item.id}" multiple style="display:none" onchange="previewEditFiles(${item.id})">
                         
-                        <div id="preview-${item.id}" class="edit-preview-grid">
-                            <img src="${item.image_url}" class="preview-item">
+                        <div class="edit-fields">
+                            <input type="text" id="edit-title-${item.id}" value="${item.title}" placeholder="Назва">
+                            <input type="text" id="short-desc-${item.id}" value="${item.short_description || ''}" placeholder="Короткий опис для картки">
+                            <textarea id="edit-body-${item.id}" rows="3">${item.body}</textarea>
+                        </div>
+
+                        <div style="margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
+                            <h4 style="margin-top:0; margin-bottom:10px;">Пункти структури об'єкта</h4>
+                            <div id="project-items-inputs-${item.id}" style="display:flex; flex-direction:column; gap:5px;">
+                                <textarea id="project-item-${item.id}-1" placeholder="Пункт 1" rows="2" style="width:100%; box-sizing:border-box;">${itemsArray[0] || ''}</textarea>
+                                <textarea id="project-item-${item.id}-2" placeholder="Пункт 2" rows="2" style="width:100%; box-sizing:border-box;">${itemsArray[1] || ''}</textarea>
+                                <textarea id="project-item-${item.id}-3" placeholder="Пункт 3" rows="2" style="width:100%; box-sizing:border-box;">${itemsArray[2] || ''}</textarea>
+                                <textarea id="project-item-${item.id}-4" placeholder="Пункт 4" rows="2" style="width:100%; box-sizing:border-box;">${itemsArray[3] || ''}</textarea>
+                                <textarea id="project-item-${item.id}-5" placeholder="Пункт 5" rows="2" style="width:100%; box-sizing:border-box;">${itemsArray[4] || ''}</textarea>
+                                <textarea id="project-item-${item.id}-6" placeholder="Пункт 6" rows="2" style="width:100%; box-sizing:border-box;">${itemsArray[5] || ''}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="folder-drop-zone" id="drop-zone-${item.id}" onclick="document.getElementById('edit-file-${item.id}').click()">
+                            <p class="folder-text">Перетягніть нові photo сюди або клікніть, щоб змінити</p>
+                            <input type="file" id="edit-file-${item.id}" multiple style="display:none" onchange="previewEditFiles(${item.id})">
+                            
+                            <div id="preview-${item.id}" class="edit-preview-grid">
+                                <img src="${item.image_url}" class="preview-item">
+                            </div>
+                        </div>
+
+                        <div class="edit-actions" style="display: flex; gap: 10px;">
+                            <button class="btn-save" onclick="updateContentWithFiles(${item.id})">Зберегти зміни</button>
+                            <button class="btn-delete" onclick="deleteContent(${item.id})" style="background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer;">Видалити</button>
                         </div>
                     </div>
-
-                    <div class="edit-actions" style="display: flex; gap: 10px;">
-                        <button class="btn-save" onclick="updateContentWithFiles(${item.id})">Зберегти зміни</button>
-                        <button class="btn-delete" onclick="deleteContent(${item.id})" style="background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer;">Видалити</button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             data.forEach(item => {
                 initDragAndDropForEdit(item.id);
-                loadSingleProjectItems(item.id);
             });
         }
     } catch (e) { 
