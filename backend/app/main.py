@@ -19,7 +19,6 @@ cloudinary.config(
     api_secret = "czltXbr4R1LePYesKmwQzL7CuPw" 
 )
 
-models.Base.metadata.drop_all(bind=database.engine)
 models.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI(title="TeksEnergy API")
