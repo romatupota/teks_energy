@@ -187,6 +187,15 @@ async function saveProjectWithFile() {
         finalFormData.append('image_url', urls[0]);
         finalFormData.append('additional_images', urls.slice(1).join(','));
 
+        const structureItems = [];
+        for (let i = 1; i <= 6; i++) {
+            const itemInput = document.getElementById(`new-project-item-${i}`);
+            if (itemInput && itemInput.value.trim() !== "") {
+                structureItems.push(itemInput.value.trim());
+            }
+        }
+        finalFormData.append('items', JSON.stringify(structureItems));
+
         console.log("Відправка в БД (FormData заповнено)");
 
         const response = await fetch(`${API_URL}/content`, {
@@ -266,56 +275,50 @@ async function loadContentList() {
                 return;
             }
 
-            container.innerHTML = data.map((item, index) => {
-                // Генеруємо індивідуальні інпути для 6 пунктів усередині кожної картки
-                let projectFeaturesHtml = `<div class="project-features-edit-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin: 15px 0; background:#1e1e1e; padding:12px; border-radius:6px; border:1px solid #333;">`;
-                for (let i = 1; i <= 6; i++) {
-                    projectFeaturesHtml += `
-                        <div style="border: 1px solid #444; padding: 8px; border-radius: 4px; background:#252525;">
-                            <span style="font-size:0.75em; color:#aaa; font-weight:bold;">Етап 0${i}</span>
-                            <input type="text" id="item-title-${item.id}-${i}" placeholder="Заголовок ${i}" style="width:100%; margin:4px 0; padding:4px; background:#111; color:#fff; border:1px solid #444;">
-                            <textarea id="item-desc-${item.id}-${i}" placeholder="Опис ${i}" rows="2" style="width:100%; padding:4px; background:#111; color:#fff; border:1px solid #444; resize:vertical; font-size:0.9em;"></textarea>
-                        </div>
-                    `;
-                }
-                projectFeaturesHtml += `</div>`;
+            container.innerHTML = data.map((item, index) => `
+                <div class="edit-card" id="card-${item.id}">
+                    <div class="edit-card-header">
+                        <span class="project-number">Проєкт №${index + 1}</span>
+                        <span class="project-id">ID: ${item.id}</span>
+                    </div>
+                    
+                    <div class="edit-fields">
+                        <input type="text" id="edit-title-${item.id}" value="${item.title}" placeholder="Назва">
+                        <input type="text" id="short-desc-${item.id}" value="${item.short_description || ''}" placeholder="Короткий опис для картки">
+                        <textarea id="edit-body-${item.id}" rows="3">${item.body}</textarea>
+                    </div>
 
-                return `
-                    <div class="edit-card" id="card-${item.id}">
-                        <div class="edit-card-header">
-                            <span class="project-number">Проєкт №${index + 1}</span>
-                            <span class="project-id">ID: ${item.id}</span>
-                        </div>
-                        
-                        <div class="edit-fields">
-                            <input type="text" id="edit-title-${item.id}" value="${item.title}" placeholder="Назва">
-                            <input type="text" id="short-desc-${item.id}" value="${item.short_description || ''}" placeholder="Короткий опис для картки">
-                            <textarea id="edit-body-${item.id}" rows="3">${item.body}</textarea>
-                        </div>
-
-                        <h4 style="margin-top:15px; color:#ccc;">📋 Етапи реалізації (6 пунктів) індивідуально для цього проєкту:</h4>
-                        ${projectFeaturesHtml}
-
-                        <div class="folder-drop-zone" id="drop-zone-${item.id}" onclick="document.getElementById('edit-file-${item.id}').click()">
-                            <p class="folder-text">Перетягніть нові фото сюди або клікніть, щоб змінити</p>
-                            <input type="file" id="edit-file-${item.id}" multiple style="display:none" onchange="previewEditFiles(${item.id})">
-                            
-                            <div id="preview-${item.id}" class="edit-preview-grid">
-                                <img src="${item.image_url}" class="preview-item">
-                            </div>
-                        </div>
-
-                        <div class="edit-actions" style="display: flex; gap: 10px;">
-                            <button class="btn-save" onclick="updateContentWithFiles(${item.id})">Зберегти зміни</button>
-                            <button class="btn-delete" onclick="deleteContent(${item.id})" style="background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer;">Видалити</button>
+                    <div style="margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
+                        <h4 style="margin-top:0; margin-bottom:10px;">Пункти структури об'єкта (Результати)</h4>
+                        <div id="project-items-inputs-${item.id}" style="display:flex; flex-direction:column; gap:5px;">
+                            <input type="text" id="project-item-${item.id}-1" placeholder="Пункт 1">
+                            <input type="text" id="project-item-${item.id}-2" placeholder="Пункт 2">
+                            <input type="text" id="project-item-${item.id}-3" placeholder="Пункт 3">
+                            <input type="text" id="project-item-${item.id}-4" placeholder="Пункт 4">
+                            <input type="text" id="project-item-${item.id}-5" placeholder="Пункт 5">
+                            <input type="text" id="project-item-${item.id}-6" placeholder="Пункт 6">
                         </div>
                     </div>
-                `;
-            }).join('');
+
+                    <div class="folder-drop-zone" id="drop-zone-${item.id}" onclick="document.getElementById('edit-file-${item.id}').click()">
+                        <p class="folder-text">Перетягніть нові фото сюди або клікніть, щоб змінить</p>
+                        <input type="file" id="edit-file-${item.id}" multiple style="display:none" onchange="previewEditFiles(${item.id})">
+                        
+                        <div id="preview-${item.id}" class="edit-preview-grid">
+                            <img src="${item.image_url}" class="preview-item">
+                        </div>
+                    </div>
+
+                    <div class="edit-actions" style="display: flex; gap: 10px;">
+                        <button class="btn-save" onclick="updateContentWithFiles(${item.id})">Зберегти зміни</button>
+                        <button class="btn-delete" onclick="deleteContent(${item.id})" style="background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer;">Видалити</button>
+                    </div>
+                </div>
+            `).join('');
 
             data.forEach(item => {
                 initDragAndDropForEdit(item.id);
-                loadProjectFeaturesToSpecificInputs(item.id); // Підвантажуємо індивідуальні пункти для кожної картки
+                loadSingleProjectItems(item.id);
             });
         }
     } catch (e) { 
@@ -323,23 +326,20 @@ async function loadContentList() {
     }
 }
 
-// Нова допоміжна функція для завантаження пунктів у картку конкретного проєкту
-async function loadProjectFeaturesToSpecificInputs(projectId) {
+async function loadSingleProjectItems(projectId) {
     try {
         const response = await fetch(`${API_URL}/api/content/items/${projectId}`);
         if (response.ok) {
-            const features = await response.json();
-            features.forEach((feat, index) => {
-                const titleEl = document.getElementById(`item-title-${projectId}-${index + 1}`);
-                const descEl = document.getElementById(`item-desc-${projectId}-${index + 1}`);
-                if (titleEl && descEl) {
-                    titleEl.value = feat.title || "";
-                    descEl.value = feat.description || "";
+            const items = await response.json();
+            items.forEach((item, index) => {
+                const inputEl = document.getElementById(`project-item-${projectId}-${index + 1}`);
+                if (inputEl) {
+                    inputEl.value = item.description || "";
                 }
             });
         }
     } catch (e) {
-        console.error(`Не вдалося завантажити індивідуальні пункти для ID ${projectId}`, e);
+        console.error(`Не вдалося завантажити пункти для проєкту ${projectId}`, e);
     }
 }
 
@@ -478,31 +478,6 @@ async function updateContentWithFiles(id) {
     let additionalImages = null;
 
     try {
-        // [ДОДАТКОВО]: Зберігаємо унікальні 6 пунктів структури саме для цього проєкту
-        const specificItems = [];
-        for (let i = 1; i <= 6; i++) {
-            const tEl = document.getElementById(`item-title-${id}-${i}`);
-            const dEl = document.getElementById(`item-desc-${id}-${i}`);
-            if (tEl && dEl && tEl.value.trim() !== "") {
-                specificItems.push({
-                    title: tEl.value.trim(),
-                    description: dEl.value.trim()
-                });
-            }
-        }
-
-        if (specificItems.length > 0) {
-            await fetch(`${API_URL}/api/admin/items/${id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ items: specificItems })
-            });
-        }
-
-        // Завантаження файлів
         if (fileInput && fileInput.files.length > 0) {
             const formData = new FormData();
             for (let i = 0; i < fileInput.files.length; i++) {
@@ -543,7 +518,24 @@ async function updateContentWithFiles(id) {
         });
 
         if (response.ok) {
-            alert("Проєкт успішно оновлено!");
+            const updatedItems = [];
+            for (let i = 1; i <= 6; i++) {
+                const itemInput = document.getElementById(`project-item-${id}-${i}`);
+                if (itemInput && itemInput.value.trim() !== "") {
+                    updatedItems.push({ description: itemInput.value.trim() });
+                }
+            }
+
+            await fetch(`${API_URL}/api/content/items/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ items: updatedItems })
+            });
+
+            alert("Проєкт та пункти успішно оновлено!");
             location.reload();
         } else {
             const errorData = await response.json();
@@ -591,67 +583,6 @@ async function loadApplications() {
     });
 }
 
-async function saveAdminItems() {
-    const token = localStorage.getItem('access_token');
-    const items = [];
-    
-    for (let i = 1; i <= 6; i++) {
-        const titleEl = document.getElementById(`item-title-${i}`);
-        const descEl = document.getElementById(`item-desc-${i}`);
-        
-        if (titleEl && descEl && titleEl.value.trim() !== "") {
-            items.push({
-                title: titleEl.value.trim(),
-                description: descEl.value.trim()
-            });
-        }
-    }
-
-    if (items.length === 0) {
-        showNotification("Будь ласка, заповніть хоча б один пункт (від 1 до 6)", "error");
-        return;
-    }
-
-    try {
-        const response = await fetch(`${API_URL}/api/admin/items`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ items: items })
-        });
-
-        if (response.ok) {
-            showNotification("Пункти успішно збережено на сайті!");
-        } else {
-            const err = await response.json();
-            showNotification("Помилка збереження: " + (err.detail || "від 1 до 6 пунктів"), "error");
-        }
-    } catch (e) {
-        showNotification("Помилка з'єднання з сервером", "error");
-    }
-}
-
-async function loadAdminItems() {
-    try {
-        const response = await fetch(`${API_URL}/api/content/items`);
-        if (response.ok) {
-            const data = await response.json();
-            data.forEach((item, index) => {
-                const titleEl = document.getElementById(`item-title-${index + 1}`);
-                const descEl = document.getElementById(`item-desc-${index + 1}`);
-                if (titleEl && descEl) {
-                    titleEl.value = item.title;
-                    descEl.value = item.description;
-                }
-            });
-        }
-    } catch (e) {
-        console.error("Не вдалося завантажити пункти структури", e);
-    }
-}
-
 window.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('access_token')) {
         const loginSec = document.getElementById('login-section');
@@ -662,7 +593,6 @@ window.addEventListener('DOMContentLoaded', () => {
         
         loadContentList();
         loadApplications();
-        loadAdminItems();
         setInterval(loadApplications, 300000);
     }
 });

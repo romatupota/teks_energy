@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
+from sqlalchemy.orm import relationship
 from datetime import datetime, timedelta, timezone
 from .database import Base
 
@@ -23,6 +24,8 @@ class Content(Base):
     additional_images = Column(String, default="")
     owner_id = Column(Integer, ForeignKey("users.id"))
 
+    items = relationship("Item", back_populates="project", cascade="all, delete-orphan")
+
 class Application(Base):
     __tablename__ = "applications"
 
@@ -36,5 +39,8 @@ class Item(Base):
     __tablename__ = "items"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, nullable=False)
+    number = Column(Integer, nullable=False)
     description = Column(String, nullable=False)
+    
+    project_id = Column(Integer, ForeignKey("content.id", ondelete="CASCADE"), nullable=False)
+    project = relationship("Content", back_populates="items")

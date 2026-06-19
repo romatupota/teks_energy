@@ -906,7 +906,7 @@ async function loadProjectFeatures(projectId) {
     try {
         const response = await fetch(`${API_URL}/api/content/items/${projectId}`);
         if (!response.ok) {
-            console.error("Не вдалося завантажити пункти");
+            console.error("Не вдалося завантажити пункти структури");
             return;
         }
 
@@ -924,15 +924,15 @@ async function loadProjectFeatures(projectId) {
         ];
 
         container.innerHTML = items.map((item, index) => {
-            if (!item.title || item.title.trim() === "") return "";
+            if (!item.description || item.description.trim() === "") return "";
             
-            const num = String(index + 1).padStart(2, '0');
+            const num = String(item.number || (index + 1)).padStart(2, '0');
             const colorClass = colorClasses[index] || 'detail-feature--light';
 
             return `
                 <article class="detail-feature ${colorClass}">
                     <span class="detail-feature__num">${num}</span>
-                    <p><b>${item.title}</b><br>${item.description || ''}</p>
+                    <p>${item.description}</p>
                 </article>
             `;
         }).join('');
