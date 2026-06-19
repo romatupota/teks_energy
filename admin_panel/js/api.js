@@ -336,7 +336,7 @@ async function loadSingleProjectItems(projectId) {
         const response = await fetch(`${API_URL}/api/content/items/${projectId}`);
         
         for (let i = 1; i <= 6; i++) {
-            const inputEl = document.getElementById(`project-item-${projectId}-${i}`);
+            const inputEl = document.getElementById(`new-project-item-${i}`);
             if (inputEl) inputEl.value = ""; 
         }
 
@@ -345,7 +345,7 @@ async function loadSingleProjectItems(projectId) {
         if (response.ok) {
             const items = await response.json();
             items.forEach((item, index) => {
-                const inputEl = document.getElementById(`project-item-${projectId}-${index + 1}`);
+                const inputEl = document.getElementById(`new-project-item-${index + 1}`);
                 if (inputEl) {
                     inputEl.value = item.description || "";
                 }

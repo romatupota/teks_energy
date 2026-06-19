@@ -896,6 +896,10 @@ async function loadProjectDetails() {
 }
 
 async function loadProjectFeatures(projectId) {
+    if (!window.location.pathname.includes('project_detail.html')) {
+        return;
+    }
+
     if (!projectId) {
         const params = new URLSearchParams(window.location.search);
         projectId = params.get('id');
@@ -918,7 +922,10 @@ async function loadProjectFeatures(projectId) {
         }
 
         const items = await response.json();
-        if (!container) return;
+        if (!container) {
+            console.error("Контейнер для пунктів (.project-detail__features або #detail-features-list) не знайдено на сторінці project_detail.html");
+            return;
+        }
 
         const colorClasses = [
             'detail-feature--light',
