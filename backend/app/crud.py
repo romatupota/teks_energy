@@ -42,6 +42,7 @@ def create_content(db: Session, content: schemas.ContentCreate, owner_id: int):
         short_description=content.short_description,
         image_url=content.image_url,
         additional_images=content.additional_images,
+        structure_items=content.structure_items,
         owner_id=owner_id
     )
     db.add(db_content)
@@ -70,7 +71,7 @@ def delete_content(db: Session, content_id: int):
 def create_application(db: Session, app_data: schemas.ApplicationCreate):
     current_time = datetime.now(kyiv_tz) 
     db_application = models.Application(
-        **app_data.dict(),
+        **app_data.model_dump(),
         created_at=current_time
     )
     db.add(db_application)
@@ -88,14 +89,3 @@ def delete_application(db: Session, app_id: int):
         db.commit()
         return True
     return False
-
-def get_all_items(db: Session):
-    return db.query(models.Item).all()
-
-def replace_items(db: Session, items_data: list[schemas.ItemSchema]):
-    db.query(models.Item).delete()
-    for item in items_data:
-        db_item = models.Item(title=item.title, description=item.description)
-        db.add(db_item)
-    db.commit()
-    return True
