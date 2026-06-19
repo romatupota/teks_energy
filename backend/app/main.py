@@ -19,7 +19,13 @@ cloudinary.config(
     api_secret = "czltXbr4R1LePYesKmwQzL7CuPw" 
 )
 
-models.Base.metadata.drop_all(bind=database.engine)
+from sqlalchemy import text
+
+with database.engine.connect() as connection:
+    connection.execute(text("DROP TABLE IF EXISTS items CASCADE;"))
+    connection.execute(text("DROP TABLE IF EXISTS content CASCADE;"))
+    connection.commit()
+
 models.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI(title="TeksEnergy API")
