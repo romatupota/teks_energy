@@ -70,40 +70,29 @@ def create_project(
     short_description: str = Form(None),
     image_url: str = Form(None),
     additional_images: str = Form(""),
-    items: str = Form("[]"),
+    structure_items: str = Form("[]"),
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(auth.get_current_user)
 ):
+    try:
+        parsed_items = json.loads(structure_items)
+        items_list = []
+        for item in parsed_items:
+            desc = item.get("description", "") if isinstance(item, dict) else str(item)
+            if desc.strip():
+                items_list.append(desc.strip())
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Некоректний формат пунктів структури: {str(e)}")
+
     project_data = schemas.ContentCreate(
         title=title,
         body=body,
         short_description=short_description,
         image_url=image_url,
-        additional_images=additional_images
+        additional_images=additional_images,
+        structure_items=items_list
     )
     db_content = crud.create_content(db=db, content=project_data, owner_id=current_user.id)
-    
-    try:
-        items_list = json.loads(items)
-        for index, item_text in enumerate(items_list):
-            if isinstance(item_text, dict):
-                desc = item_text.get("description", "")
-            else:
-                desc = str(item_text)
-            
-            if desc.strip():
-                db_item = models.Item(
-                    number=index + 1,
-                    description=desc,
-                    project_id=db_content.id
-                )
-                db.add(db_item)
-        db.commit()
-        db.refresh(db_content)
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=400, detail=f"Помилка обробки пунктів структури: {str(e)}")
-        
     return db_content
 
 @app.patch("/content/{content_id}", response_model=schemas.ContentOut)
@@ -169,40 +158,6 @@ def delete_application(
     if not success:
         raise HTTPException(status_code=404, detail="Заявку не знайдено")
     return {"detail": "Заявку видалено успішно"}
-
-@app.post("/api/content/items/{project_id}")
-async def save_project_items_flexible(
-    project_id: int, 
-    payload: list, 
-    db: Session = Depends(database.get_db), 
-    current_user: models.User = Depends(auth.get_current_user)
-):
-    project = db.query(models.Content).filter(models.Content.id == project_id).first()
-    if not project:
-        raise HTTPException(status_code=404, detail="Проєкт не знайдено")
-    try:
-        db.query(models.Item).filter(models.Item.project_id == project_id).delete()
-        for index, item_data in enumerate(payload):
-            desc = item_data.get("description", "") if isinstance(item_data, dict) else str(item_data)
-            if desc.strip():
-                db_item = models.Item(
-                    number=index + 1, 
-                    description=desc, 
-                    project_id=project_id
-                )
-                db.add(db_item)
-        db.commit()
-        return {"status": "success", "message": f"Синхронізовано пунктів: {len(payload)} для проєкту {project_id}"}
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/content/items/{project_id}")
-async def get_project_items(project_id: int, db: Session = Depends(database.get_db)):
-    project = db.query(models.Content).filter(models.Content.id == project_id).first()
-    if not project:
-        return []
-    return db.query(models.Item).filter(models.Item.project_id == project_id).order_by(models.Item.number.asc()).all()
 
 if __name__ == "__main__":
     import uvicorn

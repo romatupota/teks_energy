@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
 
@@ -25,6 +25,7 @@ class ContentBase(BaseModel):
     short_description: Optional[str] = None
     image_url: Optional[str] = None
     additional_images: Optional[str] = "" 
+    structure_items: Optional[List[str]] = []
 
 class ContentCreate(ContentBase):
     pass
@@ -35,6 +36,7 @@ class ContentUpdate(BaseModel):
     short_description: Optional[str] = None
     image_url: Optional[str] = None
     additional_images: Optional[str] = None
+    structure_items: Optional[List[str]] = None
 
 class ContentOut(ContentBase):
     id: int
@@ -54,20 +56,3 @@ class ApplicationOut(ApplicationCreate):
 
     class Config:
         from_attributes = True
-
-class ItemSchema(BaseModel):
-    number: Optional[int] = None
-    description: str
-
-    class Config:
-        from_attributes = True
-
-class ItemOut(ItemSchema):
-    id: int
-    project_id: int
-
-    class Config:
-        from_attributes = True
-
-class ItemsPayload(BaseModel):
-    items: List[ItemSchema] = Field(..., min_items=1, max_items=6)

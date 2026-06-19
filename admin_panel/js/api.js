@@ -163,7 +163,7 @@ async function saveProjectWithFile() {
     }
 
     try {
-        showNotification("Завантаження фото...");
+        showNotification("Завантаження photo...");
 
         const uploadFormData = new FormData();
         for (let i = 0; i < fileInput.files.length; i++) {
@@ -200,7 +200,10 @@ async function saveProjectWithFile() {
             for (let i = 1; i <= 6; i++) {
                 const itemInput = document.getElementById(`new-project-item-${i}`);
                 if (itemInput && itemInput.value.trim() !== "") {
-                    structureItems.push({ description: itemInput.value.trim() });
+                    structureItems.push({ 
+                        number: i,
+                        description: itemInput.value.trim() 
+                    });
                 }
             }
 
@@ -211,7 +214,7 @@ async function saveProjectWithFile() {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify(structureItems)
+                    body: JSON.stringify({ items: structureItems })
                 });
             }
 
