@@ -142,7 +142,6 @@ async function deleteAdmin() {
 
 async function saveProjectWithFile() {
     const token = localStorage.getItem('access_token');
-
     const titleEl = document.getElementById('content-title');
     const bodyEl = document.getElementById('content-body');
     const shortDescEl = document.getElementById('content-short-description'); 
@@ -187,31 +186,39 @@ async function saveProjectWithFile() {
         finalFormData.append('image_url', urls[0]);
         finalFormData.append('additional_images', urls.slice(1).join(','));
 
-        const structureItems = [];
-        for (let i = 1; i <= 6; i++) {
-            const itemInput = document.getElementById(`new-project-item-${i}`);
-            if (itemInput && itemInput.value.trim() !== "") {
-                structureItems.push(itemInput.value.trim());
-            }
-        }
-        finalFormData.append('items', JSON.stringify(structureItems));
-
-        console.log("Відправка в БД (FormData заповнено)");
-
         const response = await fetch(`${API_URL}/content`, {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
+            headers: { 'Authorization': `Bearer ${token}` },
             body: finalFormData
         });
 
         if (response.ok) {
+            const project = await response.json();
+            const projectId = project.id;
+
+            const structureItems = [];
+            for (let i = 1; i <= 6; i++) {
+                const itemInput = document.getElementById(`new-project-item-${i}`);
+                if (itemInput && itemInput.value.trim() !== "") {
+                    structureItems.push({ description: itemInput.value.trim() });
+                }
+            }
+
+            if (structureItems.length > 0) {
+                await fetch(`${API_URL}/api/content/items/${projectId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ items: structureItems })
+                });
+            }
+
             showNotification("🚀 Проєкт опубліковано!");
             setTimeout(() => location.reload(), 1500);
         } else {
             const error = await response.json();
-            console.log("Помилка 422 дебаг:", error);
             showNotification("Помилка БД: " + (error.detail || "422"), "error");
         }
     } catch (e) {
@@ -227,9 +234,7 @@ async function deleteApplication(appId) {
     try {
         const response = await fetch(`${API_URL}/applications/${appId}`, {
             method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            headers: { 'Authorization': `Bearer ${token}` }
         });
 
         if (response.ok) {
@@ -289,19 +294,19 @@ async function loadContentList() {
                     </div>
 
                     <div style="margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
-                        <h4 style="margin-top:0; margin-bottom:10px;">Пункти структури об'єкта (Результати)</h4>
+                        <h4 style="margin-top:0; margin-bottom:10px;">Пункти структури об'єкта</h4>
                         <div id="project-items-inputs-${item.id}" style="display:flex; flex-direction:column; gap:5px;">
-                            <input type="text" id="project-item-${item.id}-1" placeholder="Пункт 1">
-                            <input type="text" id="project-item-${item.id}-2" placeholder="Пункт 2">
-                            <input type="text" id="project-item-${item.id}-3" placeholder="Пункт 3">
-                            <input type="text" id="project-item-${item.id}-4" placeholder="Пункт 4">
-                            <input type="text" id="project-item-${item.id}-5" placeholder="Пункт 5">
-                            <input type="text" id="project-item-${item.id}-6" placeholder="Пункт 6">
+                            <textarea id="project-item-${item.id}-1" placeholder="Пункт 1" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
+                            <textarea id="project-item-${item.id}-2" placeholder="Пункт 2" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
+                            <textarea id="project-item-${item.id}-3" placeholder="Пункт 3" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
+                            <textarea id="project-item-${item.id}-4" placeholder="Пункт 4" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
+                            <textarea id="project-item-${item.id}-5" placeholder="Пункт 5" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
+                            <textarea id="project-item-${item.id}-6" placeholder="Пункт 6" rows="2" style="width:100%; box-sizing:border-box;"></textarea>
                         </div>
                     </div>
 
                     <div class="folder-drop-zone" id="drop-zone-${item.id}" onclick="document.getElementById('edit-file-${item.id}').click()">
-                        <p class="folder-text">Перетягніть нові фото сюди або клікніть, щоб змінить</p>
+                        <p class="folder-text">Перетягніть нові photo сюди або клікніть, щоб змінити</p>
                         <input type="file" id="edit-file-${item.id}" multiple style="display:none" onchange="previewEditFiles(${item.id})">
                         
                         <div id="preview-${item.id}" class="edit-preview-grid">
@@ -329,8 +334,21 @@ async function loadContentList() {
 async function loadSingleProjectItems(projectId) {
     try {
         const response = await fetch(`${API_URL}/api/content/items/${projectId}`);
+        
+        if (response.status === 404) {
+            for (let i = 1; i <= 6; i++) {
+                const inputEl = document.getElementById(`project-item-${projectId}-${i}`);
+                if (inputEl) inputEl.value = ""; 
+            }
+            return;
+        }
+
         if (response.ok) {
             const items = await response.json();
+            for (let i = 1; i <= 6; i++) {
+                const inputEl = document.getElementById(`project-item-${projectId}-${i}`);
+                if (inputEl) inputEl.value = "";
+            }
             items.forEach((item, index) => {
                 const inputEl = document.getElementById(`project-item-${projectId}-${index + 1}`);
                 if (inputEl) {
@@ -339,7 +357,7 @@ async function loadSingleProjectItems(projectId) {
             });
         }
     } catch (e) {
-        console.error(`Не вдалося завантажити пункти для проєкту ${projectId}`, e);
+        console.log(`Помилка при завантаженні пунктів для ID ${projectId}`);
     }
 }
 
@@ -350,9 +368,7 @@ async function deleteContent(id) {
     try {
         const response = await fetch(`${API_URL}/content/${id}`, {
             method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            headers: { 'Authorization': `Bearer ${token}` }
         });
 
         if (response.ok) {
@@ -368,31 +384,6 @@ async function deleteContent(id) {
 }
 
 window.deleteContent = deleteContent;
-
-async function updateContent(id) {
-    const title = document.getElementById(`title-${id}`).value;
-    const body = document.getElementById(`body-${id}`).value;
-    const token = localStorage.getItem('access_token');
-    const imageUrl = document.getElementById(`img-${id}`).value;
-
-    try {
-        const response = await fetch(`${API_URL}/content/${id}`, {
-            method: 'PATCH',
-            headers: { 
-                'Content-Type': 'application/json', 
-                'Authorization': `Bearer ${token}` 
-            },
-            body: JSON.stringify({ title, body, image_url: imageUrl })
-        });
-
-        if (response.ok) {
-            showNotification("Зміни збережено!");
-        } else {
-            const data = await response.json();
-            showNotification(data.detail || "Помилка оновлення", "error");
-        }
-    } catch (e) { showNotification("Помилка з'єднання", "error"); }
-}
 
 function filterProjects() {
     const searchValue = document.getElementById('admin-search').value.toLowerCase();
@@ -469,7 +460,6 @@ async function updateContentWithFiles(id) {
     const shortDescValue = document.getElementById(`short-desc-${id}`).value;
 
     if (!titleInput || !bodyInput) {
-        console.error(`Помилка: Не знайдено поля для ID ${id}. Перевірте назви ID в HTML.`);
         alert("Помилка: Елементи форми не знайдені.");
         return; 
     }

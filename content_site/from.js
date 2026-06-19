@@ -905,6 +905,14 @@ async function loadProjectFeatures(projectId) {
 
     try {
         const response = await fetch(`${API_URL}/api/content/items/${projectId}`);
+        
+        if (response.status === 404) {
+            console.log(`Для проєкту з ID ${projectId} пункти структури відсутні.`);
+            const container = document.querySelector('.project-detail__features') || document.getElementById('detail-features-list');
+            if (container) container.innerHTML = '';
+            return;
+        }
+
         if (!response.ok) {
             console.error("Не вдалося завантажити пункти структури");
             return;
