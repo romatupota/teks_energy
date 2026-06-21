@@ -22,24 +22,13 @@ cloudinary.config(
 models.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI(title="TeksEnergy API")
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://teks.energy/",
+        "https://teks.energy",
         "https://teks-energy-admin-panel.onrender.com",
-        "https://teks.energy/index.html?#",
-        "https://teks.energy/index.html?#services",
-        "https://teks.energy/about.html",
-        "https://teks.energy/index.html#cta",
-        "https://teks.energy/contacts.html",
-        "https://teks.energy/project-svitoch.html",
-        "https://teks.energy/service-connection.html",
-        "https://teks.energy/service-substations.html",
-        "https://teks.energy/service-generators.html",
-        "https://teks.energy/service-renewable.html",
-        "https://teks.energy/service-laboratory.html",
-        "https://teks.energy/project_detail.html"
+        "http://localhost:5500",
+        "http://127.0.0.1:5500"
     ],
     allow_credentials=True,
     allow_methods=["*"],

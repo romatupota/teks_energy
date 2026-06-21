@@ -106,15 +106,15 @@
             <div class="cta-image"></div>
             <div class="cta-orb"></div>
           </div>
-          <form class="cta-form">
+            <form id="main-application-form" class="cta-form">
             <label>
-              <input type="text" placeholder="Ваше імʼя" data-i18n-placeholder="form_name_placeholder" />
+              <input type="text" id="app-name" placeholder="Ваше імʼя" data-i18n-placeholder="form_name_placeholder" required />
             </label>
             <label>
-              <input type="tel" placeholder="+380 00 000 00 00" value="+380 " data-i18n-placeholder="form_phone_placeholder" />
+              <input type="tel" id="app-phone" placeholder="+380 00 000 00 00" value="+380 " data-i18n-placeholder="form_phone_placeholder" required />
             </label>
             <label>
-              <select>
+              <select id="app-service">
                 <option value="" selected disabled data-i18n="form_option_placeholder">Оберіть послугу</option>
                 <option data-i18n="form_option_1">Проектування і будівництво мереж електропостачання</option>
                 <option data-i18n="form_option_2">Підключення до електричних мереж та збільшення потужності</option>

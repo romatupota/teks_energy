@@ -906,16 +906,42 @@ async function renderProjectDetail() {
 }
 
 function initApplicationForm() {
+    console.log("Диагностика: Перевірка наявності форми...");
     const appForm = document.getElementById('main-application-form');
-    if (!appForm) return;
+    
+    if (!appForm) {
+        console.log("Диагностика: Форму з id='main-application-form' на цій сторінці не знайдено.");
+        return;
+    }
+    console.log("Диагностика: Форму знайдено! Навішую обробник подій.");
 
     appForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        console.log("Диагностика: Кнопку відправки натиснуто, збираю дані...");
+
+        const nameInput = document.getElementById('app-name');
+        const phoneInput = document.getElementById('app-phone');
+        const serviceInput = document.getElementById('app-service');
+
+        console.log("Диагностика елементів HTML:", {
+            nameInput: nameInput,
+            phoneInput: phoneInput,
+            serviceInput: serviceInput
+        });
+
+        if (!nameInput || !phoneInput) {
+            console.error("Критична помилка: Поля ім'я (id='app-name') або телефону (id='app-phone') взагалі відсутні в HTML коді цієї сторінки!");
+            alert("Помилка конфігурації форми на цій сторінці.");
+            return;
+        }
+
         const appData = {
-            user_name: document.getElementById('app-name').value,
-            user_phone: document.getElementById('app-phone').value,
-            service_type: document.getElementById('app-service').value
+            user_name: nameInput.value,
+            user_phone: phoneInput.value,
+            service_type: serviceInput ? serviceInput.value : "Загальна консультація"
         };
+
+        console.log("Диагностика: Відправляю дані на сервер...", appData);
 
         try {
             const response = await fetch(`${API_URL}/applications`, {
@@ -924,21 +950,31 @@ function initApplicationForm() {
                 body: JSON.stringify(appData)
             });
 
+            console.log("Диагностика: Статус відповіді сервера:", response.status);
+
             if (response.ok) {
                 alert("Дякуємо! Ваша заявка прийнята. Ми зв'яжемося з вами найближчим часом.");
                 appForm.reset();
             } else {
+                const errorText = await response.text();
+                console.error("Сервер повернув помилку:", errorText);
                 alert("Помилка при відправці. Спробуйте пізніше.");
             }
         } catch (error) {
-            console.error("Помилка відправки заявки:", error);
+            console.error("Критична помилка мережі:", error);
             alert("Сервер недоступний.");
         }
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchProjects();
-    renderProjectDetail();
     initApplicationForm();
+
+    if (document.getElementById('projects-container')) {
+        fetchProjects();
+    }
+    
+    if (document.getElementById('detail-title')) {
+        renderProjectDetail();
+    }
 });
